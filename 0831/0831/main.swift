@@ -1,73 +1,92 @@
-var playerCard = 0
-var dealerCard = 0
+var playerCard = [getNum(), getNum()]
+var dealerCard = [getNum(), getNum()]
 
 var isPlayerPlaying = true
 var isDealerPlaying = true
 
-func playerTurn(playerCard: Int, command: String) -> Int{
-    var playerCard = playerCard
+func getNum() -> Int{
+    let random = Int.random(in: 1...10)
+    return random
+}
+
+func sumCards(_ cards: [Int]) -> Int {
+    let sum = cards.reduce(0, +)
+    return sum
+}
+
+func playerTurn(playerCard: [Int], command: String) -> [Int]{
+    var playerCard: [Int] = playerCard
     let command = command
     
-    while isPlayerPlaying {
-        if command == "hit" {
-            playerCard += Int.random(in: 1...10)
-            if playerCard > 21 {
-                print("Player Bust! You LOSE...")
-                playerCard = -1
-                isPlayerPlaying = false
-            }
-            print("Hit! Player Hands: \(playerCard)")
-        } else if command == "stand" {
-            print("Player stands. Player Hands: \(playerCard)")
+    if command == "hit" {
+        playerCard.append(getNum())
+        if sumCards(playerCard) > 21 {
             isPlayerPlaying = false
+        } else {
+            print("Hit! Player Hands: \(playerCard)")
         }
+    } else if command == "stand" {
+        print("Player stands. Player Hands: \(playerCard)")
+        isPlayerPlaying = false
     }
-    
     return playerCard
 }
 
-func dealerTurn(dealerCard: Int) -> Int{
-    var dealerCard = dealerCard
+func dealerTurn(dealerCard: [Int]) -> [Int] {
+    var dealerCard: [Int] = dealerCard
     
-    if dealerCard <= 16 {
-        dealerCard += Int.random(in: 1...10)
-        if dealerCard > 21 {
-            print("Dealer Bust! You WIN!")
-            dealerCard = -1
+    if sumCards(dealerCard) <= 16 {
+        dealerCard.append(getNum())
+        if sumCards(dealerCard) > 21 {
             isDealerPlaying = false
+        } else {
+            print("Hit! Dealer Hands: \(dealerCard)")
         }
-        print("Hit! Dealer Hands: \(dealerCard)")
-    } else if dealerCard >= 17 {
+    } else if sumCards(dealerCard) >= 17 {
         print("dealer stands. dealer Hands: \(dealerCard)")
-        isPlayerPlaying = false
+        isDealerPlaying = false
     }
     
     return dealerCard
 }
 
-while isPlayerPlaying && isDealerPlaying {
-    guard let command = readLine() else {
-        print("hit/standのいずれかのコマンドを入力してください。")
-        continue
-    }
-    if command != "hit" && command != "stand" {
-        print("hit/standのいずれかのコマンドを入力してください。")
-        continue
+print("YOUR CARDS ARE: \(playerCard)")
+
+func game() {
+    while isPlayerPlaying {
+        guard let command = readLine() else {
+            print("hit/standのいずれかのコマンドを入力してください。")
+            continue
+        }
+        if command != "hit" && command != "stand" {
+            print("hit/standのいずれかのコマンドを入力してください。")
+            continue
+        }
+        
+        playerCard = playerTurn(playerCard: playerCard, command: command)
+        if sumCards(playerCard) > 21 { return }
     }
     
-    let playerResult = playerTurn(playerCard: playerCard, command: command)
-    let dealerResult = dealerTurn(dealerCard: dealerCard)
-    
-    // 勝敗
-    if playerResult > dealerResult {
-        print("Player wins!")
-        break
-    } else if playerResult < dealerResult {
-        print("Dealer wins!")
-        break
-    } else if playerResult == dealerResult {
-        print("It's a tie!")
-        break
+    while isDealerPlaying {
+        dealerCard = dealerTurn(dealerCard: dealerCard)
+        if sumCards(dealerCard) > 21 { return }
     }
 }
 
+game()
+
+let playerSum = sumCards(playerCard)
+let dealerSum = sumCards(dealerCard)
+
+// 勝敗
+if playerSum > 21 {
+    print("Player Bust! Dealer wins!")
+} else if dealerSum > 21 {
+    print("Dealer Bust! Player wins!")
+} else if playerSum > dealerSum {
+    print("Player wins!")
+} else if playerSum < dealerSum {
+    print("Dealer wins!")
+} else if playerSum == dealerSum {
+    print("It's a tie!")
+}
