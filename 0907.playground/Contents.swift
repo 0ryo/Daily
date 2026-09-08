@@ -23,4 +23,4 @@ let result = calcRatings(ratings)
 
 print("平均値:\(result.averageRatings)")
 print("評価ごとの件数:\(result.countByRating)")
-print("評価ごとの件数:\(result.mostCommonRating)")
+print("最も多い評価:\(result.mostCommonRating)")
