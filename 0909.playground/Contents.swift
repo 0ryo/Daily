@@ -10,7 +10,7 @@ let orders = [
     ("mouse", 3000)
 ]
 
-func analyzeOrders(_ orders: [(String, Int)]) -> (Int, [String: Int], String?){
+func analyzeOrders(_ orders: [(String, Int)]) -> (totalSales: Int, countByProduct: [String: Int], mostPopulerProduct: String?){
     var totalSales = 0 // 全注文の売り上げ合計
     var countByProduct: [String: Int] = [:] // 商品ごとの注文回数
     
@@ -27,4 +27,6 @@ func analyzeOrders(_ orders: [(String, Int)]) -> (Int, [String: Int], String?){
 }
 
 let result = analyzeOrders(orders)
-print(result)
+print(result.totalSales)
+print(result.countByProduct)
+print(result.mostPopulerProduct)
