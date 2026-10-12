@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RentalListViewController" customModule="_012" customModuleProvider="target">
+            <connections>
+                <outlet property="rentLabel" destination="aK2-nr-662" id="21d-4W-nRH"/>
+                <outlet property="tableView" destination="4qR-sx-iIa" id="8bD-de-fHj"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="4qR-sx-iIa">
+                    <rect key="frame" x="0.0" y="120" width="393" height="732"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aK2-nr-662">
+                    <rect key="frame" x="19.999999999999996" y="72.333333333333329" width="56.666666666666657" height="27.666666666666671"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2mO-7A-ohT">
+                    <rect key="frame" x="285.33333333333331" y="65" width="87.666666666666686" height="35"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="tinted" title="全件返却"/>
+                    <connections>
+                        <action selector="tapBack:" destination="-1" eventType="touchUpInside" id="8Qk-dY-lgx"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="aK2-nr-662" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="1ex-Do-91v"/>
+                <constraint firstItem="4qR-sx-iIa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="120" id="5gs-FU-crF"/>
+                <constraint firstItem="4qR-sx-iIa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Hxo-Su-j0h"/>
+                <constraint firstItem="4qR-sx-iIa" firstAttribute="top" secondItem="2mO-7A-ohT" secondAttribute="bottom" constant="20" id="KP2-kG-6uZ"/>
+                <constraint firstAttribute="trailing" secondItem="4qR-sx-iIa" secondAttribute="trailing" id="KXU-RU-EOU"/>
+                <constraint firstItem="4qR-sx-iIa" firstAttribute="top" secondItem="aK2-nr-662" secondAttribute="bottom" constant="20" id="Rub-w2-3IO"/>
+                <constraint firstAttribute="bottom" secondItem="4qR-sx-iIa" secondAttribute="bottom" id="doe-mV-qMy"/>
+                <constraint firstAttribute="trailing" secondItem="2mO-7A-ohT" secondAttribute="trailing" constant="20" id="uvB-fl-iKG"/>
+            </constraints>
+            <point key="canvasLocation" x="-150" y="123"/>
+        </view>
+        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="bpH-Ua-ZQ6">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <point key="canvasLocation" x="-146" y="-524"/>
+        </tableView>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
