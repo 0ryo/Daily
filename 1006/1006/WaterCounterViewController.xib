@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WaterCounterViewController" customModule="_006" customModuleProvider="target">
+            <connections>
+                <outlet property="currentLabel" destination="TH1-lS-lqb" id="Pw0-Je-ybN"/>
+                <outlet property="goalLabel" destination="8f7-Uj-DJG" id="tfz-ob-jVc"/>
+                <outlet property="isCompleteLabel" destination="VgW-a5-dmi" id="7kc-SQ-RyF"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="現在1杯" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TH1-lS-lqb">
+                    <rect key="frame" x="154" y="416" width="85" height="29"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="目標4杯" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8f7-Uj-DJG">
+                    <rect key="frame" x="152" y="170" width="89" height="29"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="未達成" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VgW-a5-dmi">
+                    <rect key="frame" x="177" y="391" width="39.333333333333343" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A9I-YJ-SXP">
+                    <rect key="frame" x="152.66666666666666" y="550.33333333333337" width="87.666666666666657" height="34.333333333333371"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="filled" title="記録する"/>
+                    <connections>
+                        <action selector="recordButtonTapped:" destination="-1" eventType="touchUpInside" id="U3f-tY-ReG"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EgU-ul-NAL">
+                    <rect key="frame" x="152.66666666666666" y="624.66666666666663" width="87.666666666666657" height="34.333333333333371"/>
+                    <color key="tintColor" systemColor="systemRedColor"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="filled" title="リセット"/>
+                    <connections>
+                        <action selector="resetButtonTapped:" destination="-1" eventType="touchUpInside" id="7Dr-YT-j9p"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="TH1-lS-lqb" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="1yF-L3-ooV"/>
+                <constraint firstItem="8f7-Uj-DJG" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="340-DI-2i3"/>
+                <constraint firstAttribute="bottom" secondItem="TH1-lS-lqb" secondAttribute="bottom" constant="407" id="4sp-ZB-smg"/>
+                <constraint firstItem="VgW-a5-dmi" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="391" id="C64-wy-Hw7"/>
+                <constraint firstItem="VgW-a5-dmi" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="KW3-CD-uVn"/>
+                <constraint firstAttribute="bottom" secondItem="8f7-Uj-DJG" secondAttribute="bottom" constant="653" id="Q1Q-n3-ogL"/>
+                <constraint firstItem="TH1-lS-lqb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="416" id="Q6d-h8-rvV"/>
+                <constraint firstItem="8f7-Uj-DJG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="170" id="Qvk-mT-AN5"/>
+                <constraint firstAttribute="bottom" secondItem="A9I-YJ-SXP" secondAttribute="bottom" constant="267.32999999999998" id="WH0-BE-7wD"/>
+                <constraint firstItem="EgU-ul-NAL" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="ekJ-Fn-mky"/>
+                <constraint firstItem="A9I-YJ-SXP" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="k8G-NB-S1Q"/>
+                <constraint firstAttribute="bottom" secondItem="EgU-ul-NAL" secondAttribute="bottom" constant="193" id="nKY-RU-RQp"/>
+                <constraint firstItem="EgU-ul-NAL" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="624.66999999999996" id="s1K-sV-5u0"/>
+                <constraint firstItem="TH1-lS-lqb" firstAttribute="top" secondItem="VgW-a5-dmi" secondAttribute="bottom" constant="8" id="u65-TH-Jqe"/>
+                <constraint firstItem="A9I-YJ-SXP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="550.33000000000004" id="xwG-He-MKg"/>
+            </constraints>
+            <point key="canvasLocation" x="-344" y="38"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
