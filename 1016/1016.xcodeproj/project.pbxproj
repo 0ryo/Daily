@@ -10,22 +10,9 @@
 		EC13F91E308242DB001D7DFF /* 1016.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1016.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		EC13F930308242DC001D7DFF /* Exceptions for "1016" folder in "1016" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = EC13F91D308242DB001D7DFF /* 1016 */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		EC13F920308242DB001D7DFF /* 1016 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				EC13F930308242DC001D7DFF /* Exceptions for "1016" folder in "1016" target */,
-			);
 			path = 1016;
 			sourceTree = "<group>";
 		};
