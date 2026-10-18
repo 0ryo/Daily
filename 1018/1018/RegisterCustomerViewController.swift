@@ -44,12 +44,12 @@ class RegisterCustomerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateView()
         
         nameTextField.addTarget(self, action: #selector(nameFieldDidChange), for: .editingChanged)
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "RegisteredCustomersCell")
         tableView.dataSource = self
+        nameTextField.delegate = self
     }
     
     private func updateView() {
