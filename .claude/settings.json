@@ -23,8 +23,28 @@
       "Agent(reviewer)"
     ]
   },
+  "enabledPlugins": {
+    "claude-security@claude-plugins-official": false
+  },
   "skillOverrides": {
-    "swift-daily-review": "off"
+    "swift-daily-review": "off",
+    "animation-vocabulary": "off",
+    "apple-design": "off",
+    "beginner-purpose-code": "off",
+    "dev-plan": "off",
+    "emil-design-eng": "off",
+    "frontend-design": "off",
+    "goa-service-designer": "off",
+    "improve": "off",
+    "improve-animations": "off",
+    "japanese-natural-writing": "off",
+    "last30days": "off",
+    "monad-html": "off",
+    "note-product-qa": "off",
+    "stop-ai-slop-jp": "off",
+    "typst-slide-rebuilder": "off",
+    "ui-ux-pro-max": "off",
+    "vercel-react-best-practices": "off"
   },
   "hooks": {
     "PreToolUse": [
