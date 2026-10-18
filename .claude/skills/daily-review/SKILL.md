@@ -76,4 +76,4 @@ reviewer の結果を、次の順で表示する。reviewer の結果に直し�
 - 主な改善点: （観点：短く1〜3件）
 ```
 
-5. 最後に、記録ファイル（tasks/、reviews/、progress/）を先生役がコミットする（main にいるときは先にブランチを切る。push と PR は学習者）。学習用コードのコミットは学習者に促す。
+5. 最後に、記録ファイル（tasks/、reviews/、progress/）を先生役がコミットする（1日の終わりに claude/MMDD-records ブランチで push・PR・main へのマージまで行う）。学習用コードのコミットは学習者に促す。
