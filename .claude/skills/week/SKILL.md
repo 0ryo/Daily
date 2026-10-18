@@ -60,4 +60,4 @@ Skill ツールで `weakness` を実行し、progress/weakness.md を最新に�
 ## 見通しと計画修正案
 ```
 
-最後に、記録ファイルを先生役がコミットする（main にいるときは先にブランチを切る。push と PR は学習者）。
+最後に、記録ファイルを先生役がコミットする（1日の終わりに claude/MMDD-records ブランチで push・PR・main へのマージまで行う）。
