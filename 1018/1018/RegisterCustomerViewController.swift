@@ -149,7 +149,8 @@ extension RegisterCustomerViewController: UITableViewDataSource {
 }
 
 extension RegisterCustomerViewController: UITextFieldDelegate {
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }

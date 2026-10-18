@@ -98,7 +98,7 @@
                         <action selector="notificationSwitchDidChange:" destination="-1" eventType="valueChanged" id="PKC-MU-fe4"/>
                     </connections>
                 </switch>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ERQ-Dx-ppf">
+                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ERQ-Dx-ppf">
                     <rect key="frame" x="129" y="244" width="135.33333333333337" height="35"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="135.33000000000001" id="Ut8-Pi-I6y"/>
