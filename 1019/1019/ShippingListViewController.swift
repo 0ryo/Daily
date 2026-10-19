@@ -23,7 +23,7 @@ class ShippingListViewController: UIViewController {
         let name = rawName.trimmingCharacters(in: .whitespacesAndNewlines)
         let address = rawAdress.trimmingCharacters(in: .whitespacesAndNewlines)
         let memo = rawMemo.trimmingCharacters(in: .whitespacesAndNewlines)
-        _ = shippingList.add(name: name, address: address, memo: memo)
+        let result = shippingList.add(name: name, address: address, memo: memo) // todo: あとで結果をラベルに適用する関数を作る。
     }
     
     override func viewDidLoad() {
@@ -42,6 +42,15 @@ class ShippingListViewController: UIViewController {
     }
 }
 
+enum inputState {
+    case OK
+    case emptyName
+    case longName
+    case emptyAddress
+    case longAddress
+    case longMemo
+}
+
 struct ShippingAddress {
     let name: String
     let address: String
@@ -50,10 +59,20 @@ struct ShippingAddress {
 
 struct ShippingAddressForm {
     var shippingList: [ShippingAddress]
+    private func validationInput(name: String, address: String, memo: String) -> inputState {
+        guard !name.isEmpty else { return .emptyName }
+        guard name.count > 1 && name.count < 21 else { return .longName}
+        guard !address.isEmpty else { return .emptyAddress }
+        guard address.count > 1 && address.count < 40 else { return .longAddress }
+        guard memo.count < 30 else { return .longMemo }
+        return .OK
+    }
     
-    mutating func add(name: String, address: String, memo: String) -> Bool {
+    mutating func add(name: String, address: String, memo: String) -> inputState {
+        let result = validationInput(name: name, address: address, memo: memo)
+        guard result == .OK else { return result }
         shippingList.append(ShippingAddress(name: name, address: address, memo: memo))
-        return true
+        return result
     }
 }
 
