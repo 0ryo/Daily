@@ -10,6 +10,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShippingListViewController" customModule="_019" customModuleProvider="target">
             <connections>
+                <outlet property="addressField" destination="U2a-lL-IWz" id="vUZ-T5-b65"/>
+                <outlet property="alertLabel" destination="OKs-ql-aW3" id="RfP-0j-Mlz"/>
+                <outlet property="memoField" destination="Qrd-xC-s8O" id="xdb-8n-HAW"/>
+                <outlet property="nameField" destination="gkl-p1-I4N" id="2fw-mf-p8d"/>
+                <outlet property="tableView" destination="N0O-h5-Hiv" id="QBR-hp-05H"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -28,7 +33,7 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gkl-p1-I4N">
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="佐藤 花子" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gkl-p1-I4N">
                     <rect key="frame" x="130" y="63" width="247" height="34"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="34" id="DvU-VL-eEC"/>
@@ -43,7 +48,7 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="U2a-lL-IWz">
+                <textField opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="日本 東京都" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="U2a-lL-IWz">
                     <rect key="frame" x="130" y="111" width="247" height="34"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="34" id="0Z3-cM-sn4"/>
@@ -58,20 +63,36 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qrd-xC-s8O">
+                <textField opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Claudeがいちいち口調を守らない" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qrd-xC-s8O">
                     <rect key="frame" x="130" y="159" width="247" height="34"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="247" id="2ot-2l-BIB"/>
                         <constraint firstAttribute="height" constant="34" id="YI3-eP-qil"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="send"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vAj-wH-14O">
-                    <rect key="frame" x="159" y="208" width="75" height="35"/>
+                    <rect key="frame" x="158" y="208" width="77" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="77" id="Fdt-hc-vqA"/>
+                        <constraint firstAttribute="height" constant="35" id="NAI-xO-o3F"/>
+                    </constraints>
                     <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="tinted" title="Button"/>
+                    <buttonConfiguration key="configuration" style="tinted" title="登録"/>
+                    <connections>
+                        <action selector="registerButtonDidTap:" destination="-1" eventType="touchUpInside" id="cJX-uh-yMY"/>
+                    </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="データがありません。" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKs-ql-aW3">
+                    <rect key="frame" x="60.666666666666657" y="251.00000000000003" width="272" height="14.333333333333343"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="272" id="dNE-X6-ER3"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -88,10 +109,12 @@
                 <constraint firstItem="pWh-nx-qED" firstAttribute="top" secondItem="U3w-1F-yq4" secondAttribute="bottom" constant="27" id="OrO-EG-7QL"/>
                 <constraint firstItem="gkl-p1-I4N" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="63" id="R9K-mz-Sd1"/>
                 <constraint firstAttribute="trailing" secondItem="gkl-p1-I4N" secondAttribute="trailing" constant="16" id="YZj-WR-W6J"/>
+                <constraint firstItem="OKs-ql-aW3" firstAttribute="top" secondItem="vAj-wH-14O" secondAttribute="bottom" constant="8" id="a8V-M1-iG3"/>
                 <constraint firstAttribute="bottom" secondItem="N0O-h5-Hiv" secondAttribute="bottom" id="bXq-LN-etJ"/>
                 <constraint firstItem="N0O-h5-Hiv" firstAttribute="top" secondItem="vAj-wH-14O" secondAttribute="bottom" constant="7" id="fYW-f5-Wfs"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="U2a-lL-IWz" secondAttribute="trailing" constant="16" id="gs8-A6-YvS"/>
                 <constraint firstItem="pWh-nx-qED" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="i91-dV-FuQ"/>
+                <constraint firstItem="OKs-ql-aW3" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="krI-zn-pbI"/>
                 <constraint firstItem="U3w-1F-yq4" firstAttribute="top" secondItem="oSg-kP-vG6" secondAttribute="bottom" constant="27" id="lKH-ZI-zS8"/>
                 <constraint firstItem="vAj-wH-14O" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="sJm-R3-Psj"/>
             </constraints>

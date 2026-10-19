@@ -7,23 +7,27 @@
 
 import UIKit
 
-class ShippingListViewController: UIViewController {
+final class ShippingListViewController: UIViewController {
     
+    private var resultTimer: Timer?
     var shippingList = ShippingAddressForm(shippingList: [])
-
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var addressField: UITextField!
     @IBOutlet weak var memoField: UITextField!
+    @IBOutlet weak var alertLabel: UILabel!
     
-    @IBAction func registerButtonDidTap(_ sender: UIButton) {
+    @IBAction func registerButtonDidTap(_ sender: AnyObject) {
         let rawName = nameField.text ?? ""
-        let rawAdress = nameField.text ?? ""
-        let rawMemo = nameField.text ?? ""
+        let rawAdress = addressField.text ?? ""
+        let rawMemo = memoField.text ?? ""
         let name = rawName.trimmingCharacters(in: .whitespacesAndNewlines)
         let address = rawAdress.trimmingCharacters(in: .whitespacesAndNewlines)
         let memo = rawMemo.trimmingCharacters(in: .whitespacesAndNewlines)
-        let result = shippingList.add(name: name, address: address, memo: memo) // todo: あとで結果をラベルに適用する関数を作る。
+        let result = shippingList.add(name: name, address: address, memo: memo)
+        
+        updateView(result)
     }
     
     override func viewDidLoad() {
@@ -31,14 +35,51 @@ class ShippingListViewController: UIViewController {
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ShippingListCell")
         tableView.dataSource = self
+        nameField.delegate = self
+        addressField.delegate = self
+        memoField.delegate = self
     }
     
-    private func updateView() {
+    private func updateView(_ result: inputState) {
         tableView.reloadData()
         
-        nameField.text = ""
-        addressField.text = ""
-        memoField.text = ""
+        switch result {
+        case .OK:
+            nameField.text = ""
+            addressField.text = ""
+            memoField.text = ""
+            nameField.endEditing(true)
+            addressField.endEditing(true)
+            memoField.endEditing(true)
+            alertLabel.isHidden = true
+        case .emptyName:
+            alertLabel.isHidden = false
+            alertLabel.text = "名前を入力してください"
+            showAlert()
+        case .longName:
+            alertLabel.isHidden = false
+            alertLabel.text = "名前は1〜20文字で入力してください"
+            showAlert()
+        case .emptyAddress:
+            alertLabel.isHidden = false
+            alertLabel.text = "住所を入力してください"
+            showAlert()
+        case .longAddress:
+            alertLabel.isHidden = false
+            alertLabel.text = "住所は1〜40文字で入力してください"
+            showAlert()
+        case .longMemo:
+            alertLabel.isHidden = false
+            alertLabel.text = "配達メモは0〜30文字で入力してください"
+            showAlert()
+        }
+    }
+    
+    private func showAlert() {
+        resultTimer?.invalidate()
+        resultTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
+            self?.alertLabel.isHidden = true
+        }
     }
 }
 
@@ -61,10 +102,10 @@ struct ShippingAddressForm {
     var shippingList: [ShippingAddress]
     private func validationInput(name: String, address: String, memo: String) -> inputState {
         guard !name.isEmpty else { return .emptyName }
-        guard name.count > 1 && name.count < 21 else { return .longName}
+        guard name.count >= 1 && name.count <= 20 else { return .longName}
         guard !address.isEmpty else { return .emptyAddress }
-        guard address.count > 1 && address.count < 40 else { return .longAddress }
-        guard memo.count < 30 else { return .longMemo }
+        guard address.count >= 1 && address.count <= 40 else { return .longAddress }
+        guard memo.count >= 0 && memo.count <= 30 else { return .longMemo }
         return .OK
     }
     
@@ -84,8 +125,23 @@ extension ShippingListViewController: UITableViewDataSource {
         let content = shippingList.shippingList[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "ShippingListCell", for: indexPath)
         var config = cell.defaultContentConfiguration()
-        config.text = "\(content.name) \(content.address) メモ: \(content.memo)"
+        config.text = "\(content.name) \(content.address) \(content.memo.isEmpty ? "":"メモ: \(content.memo)")"
         cell.contentConfiguration = config
         return cell
+    }
+}
+
+extension ShippingListViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        let nextTag = textField.tag + 1
+        if textField.tag == 2 {
+            registerButtonDidTap(textField)
+        }
+        if let nextTextField = self.view.viewWithTag(nextTag) {
+            nextTextField.becomeFirstResponder()
+        }
+        
+        return true
     }
 }
