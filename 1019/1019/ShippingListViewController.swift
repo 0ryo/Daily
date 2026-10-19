@@ -133,11 +133,12 @@ extension ShippingListViewController: UITableViewDataSource {
 
 extension ShippingListViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard textField.tag != 2 else {
+            registerButtonDidTap(textField)
+            return true
+        }
         textField.resignFirstResponder()
         let nextTag = textField.tag + 1
-        if textField.tag == 2 {
-            registerButtonDidTap(textField)
-        }
         if let nextTextField = self.view.viewWithTag(nextTag) {
             nextTextField.becomeFirstResponder()
         }
