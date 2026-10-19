@@ -10,7 +10,7 @@ import UIKit
 final class ShippingListViewController: UIViewController {
     
     private var resultTimer: Timer?
-    var shippingList = ShippingAddressForm(shippingList: [])
+    var shippingList = ShippingAddressForm(addressList: [])
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var nameField: UITextField!
@@ -20,10 +20,10 @@ final class ShippingListViewController: UIViewController {
     
     @IBAction func registerButtonDidTap(_ sender: AnyObject) {
         let rawName = nameField.text ?? ""
-        let rawAdress = addressField.text ?? ""
+        let rawAddress = addressField.text ?? ""
         let rawMemo = memoField.text ?? ""
         let name = rawName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let address = rawAdress.trimmingCharacters(in: .whitespacesAndNewlines)
+        let address = rawAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         let memo = rawMemo.trimmingCharacters(in: .whitespacesAndNewlines)
         let result = shippingList.add(name: name, address: address, memo: memo)
         
@@ -40,11 +40,11 @@ final class ShippingListViewController: UIViewController {
         memoField.delegate = self
     }
     
-    private func updateView(_ result: inputState) {
+    private func updateView(_ result: InputState) {
         tableView.reloadData()
         
         switch result {
-        case .OK:
+        case .ok:
             nameField.text = ""
             addressField.text = ""
             memoField.text = ""
@@ -83,8 +83,8 @@ final class ShippingListViewController: UIViewController {
     }
 }
 
-enum inputState {
-    case OK
+enum InputState {
+    case ok
     case emptyName
     case longName
     case emptyAddress
@@ -99,30 +99,30 @@ struct ShippingAddress {
 }
 
 struct ShippingAddressForm {
-    var shippingList: [ShippingAddress]
-    private func validationInput(name: String, address: String, memo: String) -> inputState {
+    var addressList: [ShippingAddress]
+    private func validationInput(name: String, address: String, memo: String) -> InputState {
         guard !name.isEmpty else { return .emptyName }
         guard name.count >= 1 && name.count <= 20 else { return .longName}
         guard !address.isEmpty else { return .emptyAddress }
         guard address.count >= 1 && address.count <= 40 else { return .longAddress }
         guard memo.count >= 0 && memo.count <= 30 else { return .longMemo }
-        return .OK
+        return .ok
     }
     
-    mutating func add(name: String, address: String, memo: String) -> inputState {
+    mutating func add(name: String, address: String, memo: String) -> InputState {
         let result = validationInput(name: name, address: address, memo: memo)
-        guard result == .OK else { return result }
-        shippingList.append(ShippingAddress(name: name, address: address, memo: memo))
+        guard result == .ok else { return result }
+        addressList.append(ShippingAddress(name: name, address: address, memo: memo))
         return result
     }
 }
 
 extension ShippingListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return shippingList.shippingList.count
+        return shippingList.addressList.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let content = shippingList.shippingList[indexPath.row]
+        let content = shippingList.addressList[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "ShippingListCell", for: indexPath)
         var config = cell.defaultContentConfiguration()
         config.text = "\(content.name) \(content.address) \(content.memo.isEmpty ? "":"メモ: \(content.memo)")"
