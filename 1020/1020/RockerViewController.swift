@@ -49,7 +49,14 @@ class RockerViewController: UIViewController {
             self.view.endEditing(true)
         }
     }
+}
 
+struct password {
+    let input: String
+    func checkInput(password: String) -> Bool {
+        guard password.count <= 4 else { return false }
+        return true
+    }
 }
 
 extension RockerViewController: UITextFieldDelegate {
@@ -73,7 +80,7 @@ extension RockerViewController: UITextFieldDelegate {
             let unwantedStr = string.trimmingCharacters(in: allowedCharacters)
             if unwantedStr.count == 0 {
                 return true
-            } else {
+            } else if range.length <= 4 {
                 return false
             }
         }
