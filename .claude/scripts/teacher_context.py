@@ -38,11 +38,13 @@ def main() -> None:
     hours = 6.5 if today.weekday() >= 5 else 2.5
     print(f"今日: {today.isoformat()}（{WEEKDAYS[today.weekday()]}）")
     if START <= today <= END:
-        print(f"計画上の週: 第{week}週 → plan/weeks/week-{week:02d}.md")
+        path = f"plan/short-term/week-{week:02d}.md"
+        note = "" if os.path.exists(path) else "（まだない。/week で作る）"
+        print(f"計画上の週: 第{week}週 → 短期目標 {path}{note}")
     else:
         print("計画上の週: 計画期間（2026-10-17〜2027-03-31）の外")
     print(f"基準の学習時間: {hours}h（平日2.5h、土日6.5h）")
-    print(f"月: {today.month}月")
+    print(f"月: {today.month}月 → 中期目標 plan/goals.md の「{today.month}月」")
 
     print(f"ブランチ: {git('branch', '--show-current')}")
     print(f"HEAD: {git('rev-parse', 'HEAD')}（{git('log', '-1', '--format=%h %s')}）")
