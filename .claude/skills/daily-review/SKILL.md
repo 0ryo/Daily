@@ -46,7 +46,7 @@ allowed-tools: Read Write Edit Agent Bash(python3 .claude/scripts/teacher_contex
 ## 4. reviewer に採点させる
 Agent ツールで `reviewer` サブエージェントを呼ぶ。プロンプトには次をすべて含める（reviewer は会話の履歴を見られない）。
 - 課題ファイルのパス（要件と完了条件はそこにある）
-- `plan/rubric.md` を基準にすること、今週の計画ファイルのパス（テストの基準が第1〜5週と第6週以降で変わる）
+- `plan/rubric.md` を基準にすること、自動テストを学んだ後かどうか（テストの基準が変わる。progress/log.md と plan/short-term/ の過去の週で、自動テストを扱った週があるかで判断する）
 - 採点対象のファイルの一覧と、`git diff` の結果
 - ビルド・テスト・実行の結果（成功・失敗とエラー文、未確認の項目）
 - 修正後のコードや直し方を書かないこと
