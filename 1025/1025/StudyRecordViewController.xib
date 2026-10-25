@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StudyRecordViewController" customModule="_025" customModuleProvider="target">
+            <connections>
+                <outlet property="registerButton" destination="Gdt-S9-mnk" id="Doy-rE-SB6"/>
+                <outlet property="statusLabel" destination="gdo-EO-zW3" id="qKv-Xo-fD4"/>
+                <outlet property="studyTimeField" destination="now-P9-Mzy" id="rGB-qC-V2v"/>
+                <outlet property="subjectField" destination="cI9-Cj-rtn" id="fzc-nj-9HQ"/>
+                <outlet property="tableView" destination="LEC-xT-RPZ" id="Whk-R7-kNi"/>
+                <outlet property="totalMinutesLabel" destination="kaD-Kw-cTz" id="X5d-ow-58K"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="科目名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TGX-Ku-5V4">
+                    <rect key="frame" x="50" y="102" width="48" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cI9-Cj-rtn">
+                    <rect key="frame" x="222" y="95" width="146" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="34" id="FsM-MC-7jI"/>
+                        <constraint firstAttribute="width" constant="146" id="N4d-Fi-rwy"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="時間(分)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdo-dk-eOn">
+                    <rect key="frame" x="50" y="165" width="62" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="now-P9-Mzy">
+                    <rect key="frame" x="222" y="158" width="146" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="146" id="7A9-k3-jf6"/>
+                        <constraint firstAttribute="height" constant="34" id="NxM-jW-8Lm"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gdt-S9-mnk">
+                    <rect key="frame" x="159" y="241" width="75" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="75" id="0nf-xt-xof"/>
+                        <constraint firstAttribute="height" constant="35" id="iEA-Dx-wSi"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="tinted" title="追加"/>
+                    <connections>
+                        <action selector="registerButtonDidTap:" destination="-1" eventType="touchUpInside" id="xki-Cf-70s"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="科目名と時間を入力してください" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gdo-EO-zW3">
+                    <rect key="frame" x="77" y="284" width="239" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="LEC-xT-RPZ">
+                    <rect key="frame" x="0.0" y="355" width="393" height="497"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="合計：0分" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kaD-Kw-cTz">
+                    <rect key="frame" x="20" y="333" width="63" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="kdo-dk-eOn" firstAttribute="top" secondItem="TGX-Ku-5V4" secondAttribute="bottom" constant="42" id="1sN-Af-83P"/>
+                <constraint firstAttribute="trailing" secondItem="cI9-Cj-rtn" secondAttribute="trailing" constant="25" id="3W6-hr-Q5L"/>
+                <constraint firstItem="cI9-Cj-rtn" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="95" id="8tX-KQ-crd"/>
+                <constraint firstItem="now-P9-Mzy" firstAttribute="top" secondItem="cI9-Cj-rtn" secondAttribute="bottom" constant="29" id="CXb-bc-Ma7"/>
+                <constraint firstItem="TGX-Ku-5V4" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="102" id="DkK-Ux-JXF"/>
+                <constraint firstItem="Gdt-S9-mnk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="241" id="Epr-cR-ep7"/>
+                <constraint firstItem="LEC-xT-RPZ" firstAttribute="top" secondItem="gdo-EO-zW3" secondAttribute="bottom" constant="50" id="FTy-u6-J2I"/>
+                <constraint firstItem="gdo-EO-zW3" firstAttribute="top" secondItem="Gdt-S9-mnk" secondAttribute="bottom" constant="8" id="GmO-jd-pTe"/>
+                <constraint firstItem="LEC-xT-RPZ" firstAttribute="top" secondItem="kaD-Kw-cTz" secondAttribute="bottom" constant="5" id="IHh-DU-Rqc"/>
+                <constraint firstItem="Gdt-S9-mnk" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Ibc-lf-nOX"/>
+                <constraint firstItem="now-P9-Mzy" firstAttribute="top" secondItem="cI9-Cj-rtn" secondAttribute="bottom" constant="29" id="K3F-tC-CCs"/>
+                <constraint firstItem="TGX-Ku-5V4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="50" id="Px2-91-463"/>
+                <constraint firstItem="cI9-Cj-rtn" firstAttribute="leading" secondItem="TGX-Ku-5V4" secondAttribute="trailing" constant="124" id="QTl-G9-KWB"/>
+                <constraint firstItem="kdo-dk-eOn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="ZjC-n5-6lq"/>
+                <constraint firstItem="gdo-EO-zW3" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="a9n-c2-Rk1"/>
+                <constraint firstAttribute="bottom" secondItem="LEC-xT-RPZ" secondAttribute="bottom" id="bDY-6i-77x"/>
+                <constraint firstAttribute="trailing" secondItem="LEC-xT-RPZ" secondAttribute="trailing" id="bvy-3r-l35"/>
+                <constraint firstItem="cI9-Cj-rtn" firstAttribute="leading" secondItem="TGX-Ku-5V4" secondAttribute="trailing" constant="124" id="g5z-s3-fEa"/>
+                <constraint firstItem="LEC-xT-RPZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="k1M-rk-7dB"/>
+                <constraint firstItem="now-P9-Mzy" firstAttribute="leading" secondItem="kdo-dk-eOn" secondAttribute="trailing" constant="110" id="nfy-sX-qSU"/>
+                <constraint firstItem="now-P9-Mzy" firstAttribute="leading" secondItem="kdo-dk-eOn" secondAttribute="trailing" constant="110" id="op3-Oj-ZDV"/>
+                <constraint firstItem="kdo-dk-eOn" firstAttribute="top" secondItem="TGX-Ku-5V4" secondAttribute="bottom" constant="42" id="ss9-D8-w6a"/>
+                <constraint firstItem="kaD-Kw-cTz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="uhz-09-sk8"/>
+                <constraint firstAttribute="trailing" secondItem="now-P9-Mzy" secondAttribute="trailing" constant="25" id="xH1-Rs-FJh"/>
+            </constraints>
+            <point key="canvasLocation" x="-150.38167938931298" y="122.53521126760565"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
