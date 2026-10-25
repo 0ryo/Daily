@@ -20,7 +20,7 @@ final class StudyRecordViewController: UIViewController {
     @IBAction func registerButtonDidTap(_ sender: UIButton) {
         let subject = subjectField.text ?? ""
         let studyTime = studyTimeField.text ?? ""
-        let studyTimeInt = Int(studyTime) ?? 0
+        let studyTimeInt = Int(studyTime.trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0
         
         let result = studyLog.add(subject: subject, minutes: studyTimeInt)
         updateView(result)
@@ -40,11 +40,7 @@ final class StudyRecordViewController: UIViewController {
             statusLabel.text="追加しました"
             subjectField.text = ""
             studyTimeField.text = ""
-            var totalMinutes = 0
-            for log in studyLog.records {
-                totalMinutes += log.minutes
-            }
-            totalMinutesLabel.text = "合計：\(totalMinutes)分"
+            totalMinutesLabel.text = "合計：\(studyLog.totalMinutes)分"
             self.view.endEditing(true)
         } else {
             statusLabel.text = "科目名と時間を確認してください"
@@ -84,4 +80,13 @@ struct StudyLog {
         records.append(StudyRecord(subject: trimmedSubject, minutes: minutes))
         return true
     }
+    
+    var totalMinutes: Int {
+        var totalMinutes = 0
+        for record in records {
+            totalMinutes += record.minutes
+        }
+        return totalMinutes
+    }
 }
+
