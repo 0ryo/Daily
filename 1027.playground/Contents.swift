@@ -49,7 +49,7 @@ struct Menus: Decodable {
         
     }
     
-    mutating func decodeMenuTry(json: String) throws {
+    mutating func decodeMenuTry(json: String) throws -> [Menu] {
         guard let data = json.data(using: .utf8) else { throw menuError.invalidJSON }
         if let menus = try? JSONDecoder().decode([Menu].self, from: data) {
             for menu in menus {
@@ -57,7 +57,8 @@ struct Menus: Decodable {
                 guard menu.price > 0 else { throw menuError.noValue("price") }
             }
             menuArray = menus
-        }
+        } else { menuArray = [] }
+        return menuArray
     }
 }
 
