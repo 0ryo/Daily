@@ -34,9 +34,10 @@ allowed-tools: Read Write Edit Bash(python3 .claude/scripts/teacher_context.py *
 ## 4. 課題を作る
 - 課題は、その週の短期目標の目標・課題表・完了条件に沿った**新しい独立した題材**にする。過去の課題の改修を新しい課題の代わりにしない（計画がコピーしての改修を指定している日を除く）。
 - `progress/weakness.md` の弱点のうち、今日の範囲と組み合わせられるものを**1つ**選び、課題の要件に組み込む。弱点がまだなければ、過去の範囲から1つ選んで「定着確認の要素」とする。
-- 想定時間は基準の学習時間（平日2.5h、土日6.5h）に収める。
+- 想定時間は、基準の学習時間より30分短くする（平日2h、土日6h）。実際は想定より長くかかるため（2026-10-28 に学習者から指示）。
+- 新しい概念を初めて扱う日は、要件の一部をパーソンズ問題（正しいコードの行を順不同で示し、並べ替えさせる）や穴埋めにしてよい。並べ替えに使うコードは、課題の他の要件の解答にならない範囲にする。2日目以降の同じ概念では使わない。
 - 作業場所は学習用コードの場所の中にする（通常は `MMDD/`。計画が `apps/App1/` などを指定していればそこ）。先生役はその場所にファイルを作らない。
-- 「調べる公式ドキュメント」には、Apple Developer Documentation のページ名や The Swift Programming Language の章名などトピック名だけを書く。コード、API の呼び出し方、手順は書かない。
+- 「調べる公式ドキュメント」には、Apple Developer Documentation のページ名や The Swift Programming Language の章名などのトピック名と、**そのページの URL** を書く。URL は実在を確かめたものだけにする。課題の解答になるコード、API の呼び出し方、手順は書かない。
 
 ## 5. 保存する
 `tasks/YYYY-MM-DD.md` に、次の形式で保存する（Write を使う）。
@@ -48,7 +49,7 @@ allowed-tools: Read Write Edit Bash(python3 .claude/scripts/teacher_context.py *
 - 週: 第N週（plan/short-term/week-NN.md）
 - 計画の項目: （短期目標の課題表のどの行か）
 - 区分: UIKit／SwiftUI／相互運用／共通
-- 想定時間: 2.5h
+- 想定時間: 2h
 - 作業場所: `MMDD/`
 - 基準コミット: <HEAD の完全なハッシュ>
 
@@ -60,6 +61,7 @@ allowed-tools: Read Write Edit Bash(python3 .claude/scripts/teacher_context.py *
 ## 弱点・定着確認の要素
 （progress/weakness.md のどの弱点か）
 ## 調べる公式ドキュメントのトピック
+（トピック名と URL を1行ずつ。例：- [JSONDecoder](https://developer.apple.com/documentation/foundation/jsondecoder)）
 ## 引き継ぎ
 （前日からの未完了の条件。なければ「なし」）
 ```
