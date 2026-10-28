@@ -34,7 +34,7 @@ allowed-tools: Read Write Edit Bash(ls *) Bash(python3 .claude/scripts/teacher_c
 | 弱点 | 改善を確認した日 | 根拠 |
 |---|---|---|
 
-## 2日以上の詰まり（概念ヒントの対象）
+## 2日以上の詰まり
 | 問題 | 詰まった日 | 状態 |
 |---|---|---|
 ```
