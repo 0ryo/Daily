@@ -55,7 +55,7 @@ print(stepStorage.fileURL)
 print("テスト2")
 do {
     try stepStorage.deleteFile()
-    
+    print("削除が完了しました。")
 } catch {
     print("ファイルが削除できませんでした\(error)")
 }
@@ -73,6 +73,7 @@ let test3: [StepRecord] = [
 ]
 do {
     try stepStorage.save(test3)
+    print("保存が完了しました。")
 } catch {
     print("ファイルが保存できませんでした\(error)")
 }
@@ -92,6 +93,7 @@ let test5: [StepRecord] = [
 ]
 do {
     try stepStorage.save(test5)
+    print("保存が完了しました。")
 } catch {
     print("ファイルが保存できませんでした\(error)")
 }
@@ -106,6 +108,7 @@ print("テスト6")
 let test6: [StepRecord] = []
 do {
     try stepStorage.save(test6)
+    print("保存が完了しました。")
 } catch {
     print("ファイルが保存できませんでした\(error)")
 }
@@ -121,16 +124,17 @@ do {
     try stepStorage.deleteFile()
     print("ファイルを削除しました。")
 } catch {
-    print(error)
+    print("ファイルが削除できませんでした\(error)")
 }
 do {
     try stepStorage.deleteFile()
-    
+    print("削除が完了しました。")
 } catch {
     print("ファイルが削除できませんでした\(error)")
 }
 do {
-    let _ = try stepStorage.load()
+    let test7 = try stepStorage.load()
+    print(test7, test7.count)
 } catch {
     print("ファイルが読込できませんでした\(error)")
 }
