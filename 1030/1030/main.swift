@@ -15,6 +15,7 @@ struct TodoItem: Codable {
 struct TodoStorage {
     let fileURL = URL.documentsDirectory.appendingPathComponent("todos.json")
     
+    // MARK: - fileURLの実ファイルに保存する関数
     func save(_ items: [TodoItem]) throws {
         do {
             let data = try JSONEncoder().encode(items)
@@ -24,6 +25,7 @@ struct TodoStorage {
         }
     }
     
+    // MARK: - fileURLの実ファイルの中身を読み込む関数
     func load() throws -> [TodoItem] {
         guard FileManager.default.fileExists(atPath: fileURL.path) else { return [] }
         do {
@@ -36,6 +38,7 @@ struct TodoStorage {
         }
     }
     
+    // MARK: - fileURLの実ファイルにエンコードしていないStringを書き込む関数
     func writeText(_ text: String) throws {
         do {
             try text.write(to: fileURL, atomically: true, encoding: .utf8)
@@ -44,6 +47,7 @@ struct TodoStorage {
         }
     }
     
+    // MARK: - fileURLの実ファイルを削除する関数
     func deleteFile() throws {
         guard FileManager.default.fileExists(atPath: fileURL.path) else { return }
         do {
@@ -54,22 +58,21 @@ struct TodoStorage {
     }
 }
 
+// MARK: - アプリの起動時に一覧を用意する関数
 func loadItemsAtLaunch(from storage: TodoStorage) -> [TodoItem] {
     do {
         let items = try storage.load()
         return items
-    } catch DecodingError.typeMismatch(let property, _) {
-        print("保存データが壊れているため、空の一覧で始めます")
-        return []
-    } catch DecodingError.dataCorrupted(let property) {
-        print("保存データが壊れているため、空の一覧で始めます")
+    } catch let decodeError as DecodingError {
+        print("保存データが壊れているため、空の一覧で始めます: \(decodeError)")
         return []
     } catch {
-        print("読み込みに失敗したため、空の一覧で始めます")
+        print("読み込みに失敗したため、空の一覧で始めます: \(error)")
         return []
     }
 }
 
+// MARK: - テスト用コード
 var storage = TodoStorage()
 print("Test 1 ------------------------------------------------------")
 do {
