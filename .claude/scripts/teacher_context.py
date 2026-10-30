@@ -2,7 +2,8 @@
 """先生役のスキルが最初に実行する、現在の状況の要約。
 
 出力：今日の日付と曜日、計画上の週、基準の学習時間、HEAD のコミット、
-未コミットの変更（学習用コードの場所と記録ファイルに分ける）、直近の課題とレビュー。
+未コミットの変更（学習用コードの場所と記録ファイルに分ける）、記録の作業場所、
+直近の課題とレビュー（記録の作業場所があればそこから読む）。
 ファイルは一切変更しない。
 """
 import datetime as dt
@@ -20,11 +21,23 @@ WEEKDAYS = "月火水木金土日"
 
 def git(*args: str) -> str:
     result = subprocess.run(["git", *args], capture_output=True, text=True)
-    return result.stdout.strip()
+    return result.stdout.rstrip()
 
 
 def is_record(path: str) -> bool:
     return path.startswith(RECORD_DIRS) or path in RECORD_FILES
+
+
+def records_worktree(today: dt.date) -> str:
+    """その日の claude/MMDD-records* ブランチの worktree（最後に見つかったもの）を返す。"""
+    prefix = f"refs/heads/claude/{today:%m%d}-records"
+    found, path = "", ""
+    for line in git("worktree", "list", "--porcelain").splitlines():
+        if line.startswith("worktree "):
+            path = line[len("worktree "):]
+        elif line.startswith("branch ") and line[len("branch "):].startswith(prefix):
+            found = path
+    return found
 
 
 def main() -> None:
@@ -63,14 +76,24 @@ def main() -> None:
     for line in records[:10]:
         print(f"  {line}")
 
+    # 記録ファイルは学習者の作業ツリーに書かず、記録用の worktree にだけ書く
+    records_root = records_worktree(today)
+    if records_root:
+        print(f"記録の作業場所: {records_root}（tasks/・reviews/・progress/ はここで読み書きする）")
+    else:
+        print("記録の作業場所: まだない。次で作る → git fetch origin && "
+              f'git worktree add -b claude/{today:%m%d}-records "$TMPDIR/daily-{today:%m%d}-records" origin/main')
+    base = records_root or root
+
     for directory in ("tasks", "reviews"):
+        full = os.path.join(base, directory)
         files = sorted(
-            f for f in os.listdir(directory) if f.endswith(".md")
-        ) if os.path.isdir(directory) else []
+            f for f in os.listdir(full) if f.endswith(".md")
+        ) if os.path.isdir(full) else []
         print(f"直近の {directory}/: " + ("なし" if not files else ""))
         for name in files[-3:]:
             state = ""
-            with open(os.path.join(directory, name), encoding="utf-8") as fh:
+            with open(os.path.join(full, name), encoding="utf-8") as fh:
                 for text in fh:
                     match = re.match(r"-\s*状態[:：]\s*(.+)", text.strip())
                     if match:

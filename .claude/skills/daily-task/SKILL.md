@@ -55,7 +55,7 @@ allowed-tools: Read Write Edit Bash(python3 .claude/scripts/teacher_context.py *
 - 「公式ドキュメント」には、Apple Developer Documentation のページ名や The Swift Programming Language の章名などのトピック名と、**そのページの URL** と、何を調べるときに読むかを書く。URL は実在を確かめたものだけにする。関数の中身の解答になるコードと手順は書かない。
 
 ## 5. 保存する
-`tasks/YYYY-MM-DD.md` に、次の形式で保存する（Write を使う）。書き方の見本は同じフォルダの `example.md` にある。
+記録の作業場所（teacher_context.py の出力。なければ出力にあるコマンドで作る）の `tasks/YYYY-MM-DD.md` に、次の形式で保存する（Write を使う）。学習者の作業ツリーには書かない。書き方の見本は同じフォルダの `example.md` にある。
 
 ```
 <!-- 管理用（チャットには貼らない） -->
@@ -117,4 +117,4 @@ allowed-tools: Read Write Edit Bash(python3 .claude/scripts/teacher_context.py *
 ```
 
 ## 6. 表示する
-保存した内容のうち、「管理用」の行を除いたタイトル以下を、そのまま画面に表示する。最後に1行で「終わったら『できました』と伝えてください。記録ファイルは各自コミットしてください」と添える。
+保存した内容のうち、「管理用」の行を除いたタイトル以下を、そのまま画面に表示する。最後に1行で「終わったら『できました』と伝えてください」と添える。課題ファイルは記録の作業場所でコミットする。
