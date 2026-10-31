@@ -8,15 +8,60 @@
 import UIKit
 
 class WorkoutViewController: UIViewController {
-
+    var log = WorkoutLog(records: [])
+    
+    @IBOutlet private weak var exerciseField: UITextField!
+    @IBOutlet private weak var repsField: UITextField!
+    @IBOutlet private weak var resultLabel: UILabel!
+    @IBAction private func addButtonDidTap(_ sender: UIButton) {
+        let exercise = exerciseField.text ?? ""
+        let reps = repsField.text ?? ""
+        let repsInt = Int(reps.trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0
+        let result = log.add(name: exercise, count: repsInt)
+        
+        updateView(result)
+    }
+    @IBOutlet private weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "WorkoutCell")
+        tableView.dataSource = self
+    }
+    
+    func updateView(_ result: Bool) {
+        tableView.reloadData()
+        
+        if result {
+            resultLabel.text = "追加しました"
+            exerciseField.text = ""
+            repsField.text = ""
+            self.view.endEditing(true)
+        } else {
+            resultLabel.text = "種目名と回数を確認してください"
+        }
+    }
+}
+
+extension WorkoutViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return log.records.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let content = log.records[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "WorkoutCell", for: indexPath)
+        var config = cell.defaultContentConfiguration()
+        config.text = "\(content.name): \(content.count)回"
+        cell.contentConfiguration = config
+        return cell
     }
 }
 
 struct WorkoutRecord: Codable {
     let name: String
-    var counnt: Int
+    var count: Int
 }
 
 struct WorkoutLog {
@@ -27,7 +72,7 @@ struct WorkoutLog {
         guard !trimmedName.isEmpty else { return false }
         guard count > 0 && count <= 999 else { return false }
         
-        records.append(WorkoutRecord(name: name, counnt: count))
+        records.append(WorkoutRecord(name: name, count: count))
         return true
     }
 
