@@ -37,6 +37,7 @@
 - UICollectionView を Diffable Data Source と Compositional Layout で組める。
 - 表示用の状態と処理を ViewModel に分け、依存を protocol で差し替えてユニットテストできる（Swift Testing と XCTest）。
 - CP2（画面遷移・デリゲート・Codable 保存、120分）を解く。
+- 10月からの持ち越し（2026-10-31 に学習者が承認）：UIKit のアプリで保存したデータを再起動後に同じ順番で復元する。UIViewController のライフサイクルのメソッドが呼ばれる順番を確かめて説明できる。return キーで次の入力欄へ移る。HR1（勉強会で自分のコードに1件以上コメントをもらう）。11月が詰まるため、UICollectionView を12月に回すかを11月の途中の /week で決める。
 
 ### 12月（〜12/31）：非同期・リアクティブと App1 の実装
 - `async`/`await` と `URLSession` で API の JSON を取得し、読み込み中・成功・空・失敗・再試行を ViewModel で表せる。`@MainActor` の理由を説明できる。
@@ -63,5 +64,5 @@
 - CP6（総合、180分）を解く。requirements.md の全行に証拠を記入し、最終目標を判定する。
 
 ## 短期目標（週ごと）
-- 今週：[short-term/week-02.md](short-term/week-02.md)
+- 今週：[short-term/week-03.md](short-term/week-03.md)
 - 書き方：`plan/short-term/` の既存の週ファイルと同じ形（目標・課題表・完了条件・持ち越し）にする。/week が週末に、その週の判定のあと来週の分の案を出し、学習者の承認を得て保存する。
