@@ -29,10 +29,10 @@ class WorkoutViewController: UIViewController {
         print(storage.fileURL)
         do {
             let initialData = try storage.load()
-            log.records = initialData
-            
+            for record in initialData {
+                _ = log.add(name: record.name, count: record.count)
+            }
         } catch {
-            log.records = []
             resultLabel.text = "保存データを読み込めなかったため、空の一覧で始めます。"
             print(error)
         }
@@ -48,7 +48,6 @@ class WorkoutViewController: UIViewController {
             } catch {
                 resultLabel.text = "追加しましたが、保存に失敗しました"
                 print(error)
-                return
             }
             resultLabel.text = "追加しました"
             exerciseField.text = ""
@@ -83,14 +82,14 @@ struct WorkoutRecord: Codable {
 }
 
 struct WorkoutLog {
-    var records: [WorkoutRecord]
+    private(set) var records: [WorkoutRecord]
 
     mutating func add(name: String, count: Int) -> Bool {
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedName.isEmpty else { return false }
         guard count > 0 && count <= 999 else { return false }
         
-        records.append(WorkoutRecord(name: name, count: count))
+        records.append(WorkoutRecord(name: trimmedName, count: count))
         return true
     }
 
