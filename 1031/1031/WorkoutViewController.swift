@@ -45,11 +45,11 @@ class WorkoutViewController: UIViewController {
         if result {
             do {
                 try storage.save(log.records)
+                resultLabel.text = "追加しました"
             } catch {
                 resultLabel.text = "追加しましたが、保存に失敗しました"
                 print(error)
             }
-            resultLabel.text = "追加しました"
             exerciseField.text = ""
             repsField.text = ""
             self.view.endEditing(true)
