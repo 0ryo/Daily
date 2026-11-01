@@ -9,6 +9,7 @@ import UIKit
 
 class WorkoutViewController: UIViewController {
     var log = WorkoutLog(records: [])
+    var storage = WorkoutStorage()
     
     @IBOutlet private weak var exerciseField: UITextField!
     @IBOutlet private weak var repsField: UITextField!
@@ -25,15 +26,30 @@ class WorkoutViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(storage.fileURL)
+        do {
+            let initialData = try storage.load()
+            log.records = initialData
+            
+        } catch {
+            log.records = []
+            resultLabel.text = "保存データを読み込めなかったため、空の一覧で始めます。"
+            print(error)
+        }
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "WorkoutCell")
         tableView.dataSource = self
     }
     
     func updateView(_ result: Bool) {
-        tableView.reloadData()
-        
         if result {
+            do {
+                try storage.save(log.records)
+            } catch {
+                resultLabel.text = "追加しましたが、保存に失敗しました"
+                print(error)
+                return
+            }
             resultLabel.text = "追加しました"
             exerciseField.text = ""
             repsField.text = ""
@@ -41,6 +57,8 @@ class WorkoutViewController: UIViewController {
         } else {
             resultLabel.text = "種目名と回数を確認してください"
         }
+        
+        tableView.reloadData()
     }
 }
 
