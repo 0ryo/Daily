@@ -8,34 +8,35 @@
 import UIKit
 import Foundation
 
-class PlaceViewController: UIViewController {
-    let placeList = PlaceList(places: [
-            Place(name: "京都"),
-            Place(name: "札幌"),
-            Place(name: "那覇"),
-            Place(name: "金沢"),
+final class PlaceViewController: UIViewController {
+    private let placeList = PlaceList(places: [
+        Place(name: "京都"),
+        Place(name: "札幌"),
+        Place(name: "那覇"),
+        Place(name: "金沢"),
     ])
-    let displaySettings = DisplaySettings()
-    var placeListForDisplay: [Place] = []
+    private let displaySettings = DisplaySettings()
+    private let cellIdentifier = "PlaceListCell"
+    private var placeListForDisplay: [Place] = []
     @IBOutlet private weak var switcher: UISwitch!
     @IBOutlet private weak var tableView: UITableView!
-    @IBAction func switchValueChanged(_ sendar: UISwitch) {
-        let value = sendar.isOn
+    @IBAction func switchValueChanged(_ sender: UISwitch) {
+        let value = sender.isOn
         displaySettings.saveNewestFirst(value)
-        placeListForDisplay = placeList.sortedPlaces(newsFirst: value)
+        placeListForDisplay = placeList.sortedPlaces(newestFirst: value)
         
         tableView.reloadData()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let value = displaySettings.loadNewestFirst()
-        let sortedPlaces = placeList.sortedPlaces(newsFirst: value)
-        placeListForDisplay = sortedPlaces
+        let places = placeList.sortedPlaces(newestFirst: value)
+        placeListForDisplay = places
         switcher.isOn = value
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "PlaceListCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
     }
 }
@@ -47,7 +48,7 @@ extension PlaceViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let content = placeListForDisplay[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceListCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         var config = cell.defaultContentConfiguration()
         config.text = content.name
         cell.contentConfiguration = config
@@ -62,9 +63,9 @@ struct Place {
 struct PlaceList {
     private(set) var places: [Place]
     
-    func sortedPlaces(newsFirst: Bool) -> [Place] {
+    func sortedPlaces(newestFirst: Bool) -> [Place] {
         var copyPlaces = places
-        if newsFirst {
+        if newestFirst {
             copyPlaces.reverse()
             return copyPlaces
         } else {
