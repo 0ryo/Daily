@@ -7,9 +7,9 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+final class SettingsViewController: UIViewController {
     
-    @IBAction func closeSettings(_ sender: UIButton) {
+    @IBAction private func closeSettings(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
 
@@ -35,7 +35,7 @@ class SettingsViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        printLifecycle(screen: "Settings", method: "viewDidDDisappear")
+        printLifecycle(screen: "Settings", method: "viewDidDisappear")
     }
 }
 

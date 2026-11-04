@@ -7,18 +7,20 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
     
-    @IBAction func openSettings(_ sender: UIButton) {
-        let settingsView = SettingsViewController()
-        settingsView.modalPresentationStyle = .fullScreen
-        self.present(settingsView, animated: true)
+    @IBAction private func openSettings(_ sender: UIButton) {
+        presentSettings(style: .fullScreen)
     }
     
-    @IBAction func openSettingsBySheet(_ sender: UIButton) {
-        let settingsView = SettingsViewController()
-        settingsView.modalPresentationStyle = .pageSheet
-        self.present(settingsView, animated: true)
+    @IBAction private func openSettingsBySheet(_ sender: UIButton) {
+        presentSettings(style: .pageSheet)
+    }
+    
+    private func presentSettings(style: UIModalPresentationStyle) {
+        let settingsViewController = SettingsViewController()
+        settingsViewController.modalPresentationStyle = style
+        self.present(settingsViewController, animated: true)
     }
 
     override func viewDidLoad() {
@@ -43,6 +45,6 @@ class HomeViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        printLifecycle(screen: "Home", method: "viewDidDDisappear")
+        printLifecycle(screen: "Home", method: "viewDidDisappear")
     }
 }
