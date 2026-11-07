@@ -80,6 +80,7 @@ class PlantViewController: UIViewController {
             let alert = UIAlertController(title: "読み込めませんでした", message: "保存データを読み込めなかったため、空の一覧で始めます。", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(alert, animated: true, completion: nil)
+            didFailToLoad = false
         }
     }
     
