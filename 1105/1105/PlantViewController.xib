@@ -53,12 +53,15 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                 </textField>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aFa-8J-SoK">
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="aFa-8J-SoK">
                     <rect key="frame" x="311" y="160" width="61" height="28"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="28" id="3vJ-bG-ani"/>
                         <constraint firstAttribute="width" constant="59" id="6su-Z4-2rE"/>
                     </constraints>
+                    <connections>
+                        <action selector="switchDidChanged:" destination="-1" eventType="valueChanged" id="M6a-g7-Ql3"/>
+                    </connections>
                 </switch>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Hd0-F8-Skq">
                     <rect key="frame" x="0.0" y="294" width="393" height="558"/>
@@ -74,7 +77,6 @@
                     <buttonConfiguration key="configuration" style="filled" title="追加"/>
                     <connections>
                         <action selector="addPlant:" destination="-1" eventType="touchUpInside" id="ROh-UM-fDd"/>
-                        <action selector="switchDidChanged:" destination="-1" eventType="valueChanged" id="xCB-Pe-N2W"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="保存を失敗させる" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jZr-af-Qrc">

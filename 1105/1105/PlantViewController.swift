@@ -19,6 +19,7 @@ class PlantViewController: UIViewController {
     private var plantList: PlantList = .init(plants: [])
     private var storage = PlantStorage(fileURL: PlantStorage.normalFileURL)
     let cellReuseIdentifier = "PlantCell"
+    var didFailToLoad = false
     
     @IBOutlet private weak var plantNameField: UITextField!
     @IBOutlet private weak var wateringIntervalField: UITextField!
@@ -28,9 +29,9 @@ class PlantViewController: UIViewController {
     
     @IBAction private func switchDidChanged(_ sender: UISwitch) {
         if sender.isOn {
-            storage.fileURL = PlantStorage.failingFileURL
+            storage = PlantStorage(fileURL: PlantStorage.failingFileURL)
         } else {
-            storage.fileURL = PlantStorage.normalFileURL
+            storage = PlantStorage(fileURL: PlantStorage.normalFileURL)
         }
     }
     
@@ -57,10 +58,29 @@ class PlantViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateView(.start)
+        print(storage.fileURL)
         
+        do{
+            plantList = try .init(plants: storage.load())
+            updateView(.start)
+        } catch {
+            print(error)
+            plantList = .init(plants: [])
+            updateView(.start)
+            didFailToLoad = true
+        }
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         tableView.dataSource = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+        if didFailToLoad {
+            let alert = UIAlertController(title: "読み込めませんでした", message: "保存データを読み込めなかったため、空の一覧で始めます。", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     private func updateView(_ state: viewState) {
@@ -76,6 +96,7 @@ class PlantViewController: UIViewController {
             resultLabel.text = "追加しました"
             plantNameField.text = ""
             wateringIntervalField.text = ""
+            self.view.endEditing(true)
         case .failureSave:
             resultLabel.text = "保存に失敗しました"
         }
@@ -108,6 +129,7 @@ struct PlantList {
     func makePlant(name: String, wateringInterval: Int) -> Plant? {
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedName.isEmpty else { return nil }
+        guard wateringInterval > 0 && wateringInterval <= 30 else { return nil }
         let plant = Plant(name: trimmedName, wateringInterval: wateringInterval)
         return plant
     }
@@ -124,12 +146,25 @@ struct PlantList {
 struct PlantStorage {
     var fileURL: URL
     static let normalFileURL = URL.documentsDirectory.appendingPathComponent("plants.json")
-    static let failingFileURL = URL.documentsDirectory.appendingPathComponent("no-such-folder/plants.json")
+    static let failingFileURL = URL.documentsDirectory
+        .appending(path: "no-such-directory")
+        .appending(path: "plants.json")
     
     func save(_ plants: [Plant]) throws {
         do{
             let data = try JSONEncoder().encode(plants)
             try data.write(to: fileURL, options: .atomic)
+        } catch {
+            throw error
+        }
+    }
+    
+    func load() throws -> [Plant] {
+        guard FileManager.default.fileExists(atPath: fileURL.path) else { return [] }
+        do {
+            let data = try Data(contentsOf: fileURL)
+            let plants = try JSONDecoder().decode([Plant].self, from: data)
+            return plants
         } catch {
             throw error
         }
