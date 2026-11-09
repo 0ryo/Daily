@@ -27,7 +27,7 @@ class RecipeDetailViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard let viewControllersCount = self.navigationController?.viewControllers.count else { return }
-        print("一覧を表示：スタックの画面は\(viewControllersCount)件")
+        print("詳細を表示：スタックの画面は\(viewControllersCount)件")
     }
     
     required init?(coder: NSCoder) {

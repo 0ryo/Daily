@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RecipeListViewController: UIViewController {
+final class RecipeListViewController: UIViewController {
     let reuseIdentifier = "RecipeCell"
     var recipes: [Recipe] = []
     
@@ -47,8 +47,8 @@ extension RecipeListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true) // 選択解除
-        let recipeDetailView = RecipeDetailViewController(recipe: recipes[indexPath.row])
-        self.navigationController?.pushViewController(recipeDetailView, animated: true)// ナビゲーションコントローラーのpush遷移
+        let recipeDetailViewController = RecipeDetailViewController(recipe: recipes[indexPath.row])
+        self.navigationController?.pushViewController(recipeDetailViewController, animated: true)// ナビゲーションコントローラーのpush遷移
     }
 }
 
