@@ -65,5 +65,5 @@
 - CP6（総合、180分）を解く。requirements.md の全行に証拠を記入し、最終目標を判定する。
 
 ## 短期目標（週ごと）
-- 今週：[short-term/week-03.md](short-term/week-03.md)
+- 今週：[short-term/week-04.md](short-term/week-04.md)
 - 書き方：`plan/short-term/` の既存の週ファイルと同じ形（目標・課題表・完了条件・持ち越し）にする。/week が週末に、その週の判定のあと来週の分を作って保存する（チャットには出さない）。
