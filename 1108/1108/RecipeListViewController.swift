@@ -23,6 +23,12 @@ class RecipeListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let viewControllersCount = self.navigationController?.viewControllers.count else { return }
+        print("一覧を表示：スタックの画面は\(viewControllersCount)件")
+    }
 }
 
 extension RecipeListViewController: UITableViewDataSource, UITableViewDelegate {
@@ -43,7 +49,6 @@ extension RecipeListViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true) // 選択解除
         let recipeDetailView = RecipeDetailViewController(recipe: recipes[indexPath.row])
         self.navigationController?.pushViewController(recipeDetailView, animated: true)// ナビゲーションコントローラーのpush遷移
-        print("\(recipes[indexPath.row])が選択されました。")
     }
 }
 

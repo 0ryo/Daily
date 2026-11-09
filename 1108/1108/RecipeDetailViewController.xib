@@ -39,7 +39,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="所要時間" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YvJ-4D-JuD">
-                    <rect key="frame" x="151" y="175" width="209" height="21"/>
+                    <rect key="frame" x="151" y="175" width="209" height="20.333333333333343"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="209" id="Wnl-xg-3nB"/>
                     </constraints>
@@ -47,17 +47,27 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RJs-ld-xYg">
+                    <rect key="frame" x="144.66666666666666" y="255.33333333333337" width="104" height="35"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="一覧に戻る"/>
+                    <connections>
+                        <action selector="backButtonDidTap:" destination="-1" eventType="touchUpInside" id="jxx-c9-TwS"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="GJE-14-tCA" firstAttribute="leading" secondItem="I3b-As-ysi" secondAttribute="trailing" constant="56" id="4lX-wa-0fZ"/>
+                <constraint firstItem="RJs-ld-xYg" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="BJ2-Tv-aUi"/>
                 <constraint firstItem="YvJ-4D-JuD" firstAttribute="top" secondItem="GJE-14-tCA" secondAttribute="bottom" constant="21" id="Otz-AV-kMZ"/>
                 <constraint firstItem="zbH-6I-efP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="31" id="XbH-lT-38r"/>
                 <constraint firstItem="GJE-14-tCA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="15" id="g5c-zj-DAW"/>
                 <constraint firstItem="I3b-As-ysi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="31" id="km9-BP-yOJ"/>
                 <constraint firstItem="zbH-6I-efP" firstAttribute="top" secondItem="I3b-As-ysi" secondAttribute="bottom" constant="21" id="ogW-dV-atJ"/>
                 <constraint firstItem="YvJ-4D-JuD" firstAttribute="leading" secondItem="zbH-6I-efP" secondAttribute="trailing" constant="88" id="qJm-nZ-QtH"/>
+                <constraint firstItem="RJs-ld-xYg" firstAttribute="top" secondItem="YvJ-4D-JuD" secondAttribute="bottom" constant="60" id="yW3-eR-b8C"/>
                 <constraint firstItem="I3b-As-ysi" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="15" id="ys9-E3-8vv"/>
             </constraints>
             <point key="canvasLocation" x="139.69465648854961" y="153.52112676056339"/>
