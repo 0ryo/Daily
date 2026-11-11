@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swift Daily 課題</title>
+<!-- task_page.py が __TASKS_JSON__ と __TODAY__ を埋めて書き出す。このファイルは直接開かない。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<style>
+:root {
+  --bg: #f3f1ec; --rail: #fbfaf7; --surface: #ffffff; --sunken: #f6f4ef; --line: #e6e2d9; --line-2: #d8d3c7;
+  --ink: #1d1b26; --ink-2: #4a4757; --muted: #8a8696; --faint: #bdb8c6;
+  --accent: #f05138; --accent-ink: #c8381f; --accent-soft: #fde7e2;
+  --done: #178a5e; --done-soft: #ddf3e9; --doing: #d97706; --doing-soft: #fdf0d9;
+  --k-struct: #0f8a8a; --k-proto: #7c4dff; --k-screen: #f05138; --k-func: #2f6fe4;
+  --code-bg: #1e1d2a; --code-ink: #f1effa;
+  --shadow: 0 1px 0 rgba(29,27,38,.04), 0 10px 30px -12px rgba(29,27,38,.12);
+  --f-body: "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+  --f-num: "Space Grotesk", "Zen Kaku Gothic New", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121118; --rail: #17161f; --surface: #1c1b25; --sunken: #23222e; --line: #2c2a38; --line-2: #3a3848;
+    --ink: #efedf6; --ink-2: #c4c1d2; --muted: #8f8ba1; --faint: #575366;
+    --accent: #ff6b52; --accent-ink: #ff8a75; --accent-soft: #3a1f1b;
+    --done: #3fd19a; --done-soft: #14302a; --doing: #fbb24a; --doing-soft: #36280f;
+    --k-struct: #3cc8c8; --k-proto: #a98bff; --k-screen: #ff7a63; --k-func: #6fa0ff;
+    --code-bg: #0e0d14; --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121118; --rail: #17161f; --surface: #1c1b25; --sunken: #23222e; --line: #2c2a38; --line-2: #3a3848;
+  --ink: #efedf6; --ink-2: #c4c1d2; --muted: #8f8ba1; --faint: #575366;
+  --accent: #ff6b52; --accent-ink: #ff8a75; --accent-soft: #3a1f1b;
+  --done: #3fd19a; --done-soft: #14302a; --doing: #fbb24a; --doing-soft: #36280f;
+  --k-struct: #3cc8c8; --k-proto: #a98bff; --k-screen: #ff7a63; --k-func: #6fa0ff;
+  --code-bg: #0e0d14; --shadow: none;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.8 var(--f-body); }
+button { font: inherit; color: inherit; }
+code { font-family: var(--f-mono); font-size: .86em; background: var(--sunken); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; }
+a { color: var(--accent-ink); }
+
+.app { display: grid; grid-template-columns: 360px minmax(0, 1fr); min-height: 100vh; }
+
+/* ============ 左のレール ============ */
+.rail { background: var(--rail); border-right: 1px solid var(--line); padding: 28px 24px; position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; gap: 22px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .02em; }
+.brand-mark { width: 26px; height: 26px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; color: #fff; font: 700 13px var(--f-num); transform: rotate(-6deg); }
+.rail-body { display: flex; flex-direction: column; gap: 22px; }
+.toggle { margin-left: auto; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; cursor: pointer; color: var(--ink-2); }
+.toggle:hover { border-color: var(--line-2); color: var(--ink); }
+#themeToggle { margin-left: auto; }
+#themeToggle + .toggle { margin-left: 0; }
+:root.is-dark #themeToggle .moon, :root:not(.is-dark) #themeToggle .sun { display: none; }
+body, .rail, .card, .cal, .stat, .fact, .rules, .ref { transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+.app { transition: grid-template-columns .25s ease; }
+.app.closed { grid-template-columns: 64px minmax(0, 1fr); }
+.app.closed .rail { padding: 20px 0; align-items: center; overflow: hidden; }
+.app.closed .brand { flex-direction: column; gap: 14px; }
+.app.closed .brand-text, .app.closed .rail-body { display: none; }
+.app.closed .toggle { margin-left: 0; }
+.app.closed .chev { transform: rotate(180deg); transform-origin: 10.25px 8px; }
+.app.closed .main { margin: 0 auto; }
+.brand small { display: block; font: 500 11px var(--f-num); color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
+
+.mhead { display: flex; align-items: flex-end; gap: 12px; }
+.mnum { font: 700 64px/0.85 var(--f-num); letter-spacing: -.04em; }
+.mtxt { padding-bottom: 4px; }
+.mtxt b { display: block; font: 700 14px var(--f-num); letter-spacing: .14em; text-transform: uppercase; }
+.mtxt span { font: 500 12px var(--f-num); color: var(--muted); }
+.nav { margin-left: auto; display: flex; gap: 4px; padding-bottom: 2px; }
+.nav button { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; height: 30px; min-width: 30px; padding: 0 8px; cursor: pointer; font-size: 12px; }
+.nav button:hover { border-color: var(--line-2); }
+
+.cal { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 12px 10px 8px; box-shadow: var(--shadow); }
+.dow, .wd { display: grid; grid-template-columns: repeat(7, 1fr); }
+.dow div { font: 700 10px var(--f-num); letter-spacing: .1em; color: var(--muted); text-align: center; padding: 2px 0 8px; }
+.dow div:nth-child(6) { color: var(--k-func); } .dow div:nth-child(7) { color: var(--accent); }
+.week { position: relative; min-height: 52px; }
+.week + .week { border-top: 1px dashed var(--line); }
+.wd { position: absolute; inset: 0; }
+.wd div { text-align: center; padding-top: 5px; font: 500 12px var(--f-num); color: var(--ink-2); }
+.wd .out { color: var(--faint); }
+.wd .today span { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: var(--bg); font-weight: 700; }
+.lanes { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 3px; padding: 30px 0 7px; }
+.bar { height: 8px; margin: 0 3px; border: 0; padding: 0; cursor: pointer; border-radius: 99px; background: var(--accent); opacity: .85; transition: transform .15s, opacity .15s; }
+.bar.done { background: var(--done); } .bar.doing { background: var(--doing); }
+.bar.cl { margin-left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.bar.cr { margin-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.bar:hover { opacity: 1; transform: scaleY(1.3); }
+.bar.sel { opacity: 1; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ink); }
+.legend { display: flex; gap: 14px; justify-content: flex-end; font-size: 11px; color: var(--muted); padding: 6px 6px 0; }
+.legend i { display: inline-block; width: 14px; height: 6px; border-radius: 9px; margin-right: 6px; vertical-align: 2px; }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+.stat b { display: block; font: 700 24px/1.1 var(--f-num); }
+.stat span { font-size: 11px; color: var(--muted); }
+
+.list h3 { font: 700 11px var(--f-num); letter-spacing: .14em; color: var(--muted); text-transform: uppercase; margin: 0 0 8px; }
+.item { display: grid; grid-template-columns: 46px 1fr; gap: 10px; align-items: start; width: 100%; border: 0; background: none; text-align: left; padding: 10px; border-radius: 12px; cursor: pointer; }
+.item:hover { background: var(--sunken); }
+.item.sel { background: var(--surface); box-shadow: var(--shadow); outline: 1px solid var(--line); }
+.item .d { font: 700 18px/1 var(--f-num); }
+.item .d small { display: block; font: 500 10px var(--f-num); color: var(--muted); margin-top: 4px; letter-spacing: .06em; }
+.item .t { font-size: 13px; line-height: 1.55; color: var(--ink-2); }
+.item .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: 2px; background: var(--accent); }
+.item .dot.done { background: var(--done); } .item .dot.doing { background: var(--doing); }
+.empty { color: var(--muted); font-size: 13px; padding: 8px 10px; }
+
+/* ============ 本文 ============ */
+.main { min-width: 0; padding: 40px 56px 96px; max-width: 1000px; }
+.hero { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: start; }
+.date { width: 104px; text-align: center; background: var(--ink); color: var(--bg); border-radius: 22px; padding: 14px 0 12px; position: relative; overflow: hidden; }
+.date .m { font: 700 11px var(--f-num); letter-spacing: .2em; opacity: .7; }
+.date .d { font: 700 52px/1 var(--f-num); letter-spacing: -.04em; margin: 4px 0 2px; }
+.date .w { font: 700 11px var(--f-num); letter-spacing: .2em; color: var(--accent); }
+.date .span { position: absolute; left: 0; right: 0; bottom: 0; font: 700 10px var(--f-num); background: var(--accent); color: #fff; padding: 2px 0; letter-spacing: .1em; }
+.date.multi { padding-bottom: 26px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chip { font: 700 11px var(--f-body); padding: 3px 10px; border-radius: 99px; background: var(--sunken); color: var(--ink-2); border: 1px solid var(--line); }
+.chip.done { background: var(--done-soft); color: var(--done); border-color: transparent; }
+.chip.doing { background: var(--doing-soft); color: var(--doing); border-color: transparent; }
+.hero h1 { font-size: 30px; line-height: 1.4; font-weight: 900; margin: 0 0 10px; letter-spacing: .01em; text-wrap: balance; }
+.lead { font-size: 16px; color: var(--ink-2); margin: 0; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 26px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px 16px; }
+.fact span { display: block; font: 700 10px var(--f-num); letter-spacing: .14em; color: var(--muted); text-transform: uppercase; }
+.fact b { font-weight: 700; font-size: 14px; }
+.timebar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; margin: 10px 0 6px; background: var(--sunken); }
+.timebar i { display: block; }
+.timebar i:nth-child(1) { background: var(--ink); } .timebar i:nth-child(2) { background: var(--accent); }
+.timelbl { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
+.note { margin: 14px 0 0; font-size: 13px; color: var(--muted); display: flex; gap: 8px; }
+.note::before { content: "→"; color: var(--accent); font-weight: 700; }
+
+.tabs { position: sticky; top: 0; z-index: 5; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin: 28px -12px 0; padding: 10px 12px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.tabs a { flex: none; font-size: 12px; font-weight: 700; text-decoration: none; color: var(--muted); padding: 6px 12px; border-radius: 99px; }
+.tabs a:hover { color: var(--ink); }
+.tabs a.on { background: var(--ink); color: var(--bg); }
+
+section.sec { margin-top: 40px; scroll-margin-top: 64px; }
+.sec-h { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; }
+.sec-h h2 { margin: 0; font-size: 20px; font-weight: 900; }
+.sec-h .k { font: 700 11px var(--f-num); letter-spacing: .16em; color: var(--muted); text-transform: uppercase; }
+
+/* 守ること */
+.rules { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 20px; box-shadow: var(--shadow); }
+.rules ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 2px; }
+.rules li { padding: 6px 0 6px 28px; position: relative; }
+.rules li::before { content: "!"; position: absolute; left: 0; top: 9px; width: 18px; height: 18px; border-radius: 6px; background: var(--accent-soft); color: var(--accent-ink); font: 700 11px/18px var(--f-num); text-align: center; }
+.rules li + li { border-top: 1px dashed var(--line); }
+
+/* パート */
+.part-h { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+.part-n { font: 700 56px/0.9 var(--f-num); letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+.part-h .k { font: 700 11px var(--f-num); letter-spacing: .2em; color: var(--accent-ink); }
+.part-h h2 { margin: 0; font-size: 21px; font-weight: 900; line-height: 1.45; }
+.part-h .time { margin-left: auto; flex: none; font: 700 12px var(--f-num); padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-2); }
+.cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.card-h .name { min-width: 0; overflow-wrap: anywhere; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 22px; box-shadow: var(--shadow); }
+.card-h { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.tag { font: 700 10px var(--f-num); letter-spacing: .1em; padding: 3px 8px; border-radius: 6px; color: #fff; background: var(--muted); }
+.card-h .name { font: 600 17px var(--f-mono); letter-spacing: -.01em; }
+.card-h .name.plain { font: 900 17px var(--f-body); }
+.card-h .count { margin-left: auto; font: 700 12px var(--f-num); color: var(--muted); }
+.card[data-k="構造体"] .tag { background: var(--k-struct); } .card[data-k="プロトコル"] .tag { background: var(--k-proto); }
+.card[data-k="画面"] .tag { background: var(--k-screen); } .card[data-k="関数"] .tag, .card[data-k="列挙型"] .tag, .card[data-k="クラス"] .tag { background: var(--k-func); }
+.card > p:first-of-type { margin-top: 0; color: var(--ink-2); }
+.card p { margin: 8px 0; }
+.card ul { padding-left: 1.2em; margin: 8px 0; }
+.card li { margin: 2px 0; }
+.card li::marker { color: var(--faint); }
+.card pre { background: var(--code-bg); color: var(--code-ink); border-radius: 12px; padding: 14px 16px; overflow-x: auto; margin: 12px 0; }
+.card pre code { background: none; border: 0; padding: 0; color: inherit; font-size: 13px; line-height: 1.7; }
+.tbl { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 12px; }
+.tbl table { border-collapse: collapse; width: 100%; font-size: 14px; }
+.tbl th { background: var(--sunken); text-align: left; font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .06em; }
+.tbl th, .tbl td { padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl tr:last-child td { border-bottom: 0; }
+
+/* 手順 */
+ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 14px 0 4px; }
+ol.steps > li { counter-increment: s; position: relative; padding: 0 0 14px 42px; }
+ol.steps > li::before {
+  content: counter(s); position: absolute; left: 0; top: 2px; width: 26px; height: 26px; border-radius: 50%;
+  border: 1.5px solid var(--ink); background: var(--surface); z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  font: 700 12px/1 var(--f-num); font-variant-numeric: tabular-nums;
+}
+ol.steps > li:not(:last-child)::after { content: ""; position: absolute; left: 12.25px; top: 30px; bottom: 0; width: 1.5px; background: var(--line-2); }
+ol.steps .st-h { font-weight: 700; line-height: 1.6; padding-top: 2px; }
+ol.steps .st-b { color: var(--ink-2); }
+
+/* 確かめること */
+.card[data-k="test"] { background: linear-gradient(180deg, var(--surface), var(--sunken)); }
+.card[data-k="test"] .tag { background: var(--done); }
+ul.checks { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+ul.checks li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; cursor: pointer; transition: border-color .15s; }
+ul.checks li:hover { border-color: var(--line-2); }
+ul.checks input { appearance: none; width: 22px; height: 22px; margin: 2px 0 0; border: 1.5px solid var(--line-2); border-radius: 7px; cursor: pointer; display: grid; place-items: center; }
+ul.checks input:checked { background: var(--done); border-color: var(--done); }
+ul.checks input:checked::after { content: "✓"; color: #fff; font: 700 13px var(--f-num); }
+ul.checks li.on .flow { opacity: .55; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.act { background: var(--sunken); border: 1px solid var(--line); border-radius: 8px; padding: 1px 8px; font-size: 13.5px; }
+.arr { color: var(--faint); font-size: 12px; }
+.exp { flex-basis: 100%; margin-top: 4px; font-weight: 700; font-size: 14px; }
+.exp::before { content: "期待する表示"; font: 700 10px var(--f-body); color: var(--done); background: var(--done-soft); padding: 2px 6px; border-radius: 5px; margin-right: 8px; vertical-align: 1px; }
+
+/* 説明問題 */
+.card[data-k="q"] { border: 0; background: var(--ink); color: var(--bg); position: relative; overflow: hidden; }
+.card[data-k="q"]::after { content: "?"; position: absolute; right: 18px; top: -18px; font: 700 140px/1 var(--f-num); color: var(--accent); opacity: .9; }
+.card[data-k="q"] .tag { background: var(--accent); }
+.card[data-k="q"] p, .card[data-k="q"] li { position: relative; z-index: 1; max-width: 80%; font-size: 16px; font-weight: 700; color: var(--bg); }
+.card[data-k="q"] code { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.18); color: var(--bg); font-weight: 400; }
+
+/* 参考 */
+.refs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.ref { display: block; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; transition: transform .15s, border-color .15s; }
+.ref:hover { transform: translateY(-2px); border-color: var(--line-2); }
+.ref b { display: block; font: 600 13px var(--f-mono); word-break: break-all; }
+.ref span { display: block; font-size: 12px; color: var(--ink-2); margin-top: 4px; line-height: 1.6; }
+.ref small { display: block; font: 500 10px var(--f-num); color: var(--muted); margin-top: 8px; letter-spacing: .06em; }
+
+/* 記録 */
+details.rec { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 4px 18px; }
+details.rec summary { cursor: pointer; font-weight: 700; padding: 10px 0; color: var(--ink-2); }
+details.rec ul { padding-left: 1.2em; font-size: 13.5px; color: var(--ink-2); }
+.generic { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 20px; }
+
+.raw { white-space: pre-wrap; font: 13px/1.7 var(--f-mono); }
+
+@media (max-width: 960px) {
+  .app { grid-template-columns: 1fr; }
+  .rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 20px 16px; }
+  .main { padding: 24px 16px 64px; }
+  .app.closed { grid-template-columns: 1fr; }
+  .app.closed .rail { padding: 14px 16px; align-items: stretch; }
+  .app.closed .brand { flex-direction: row; gap: 10px; }
+  .app.closed .brand-text { display: block; }
+  .app.closed #themeToggle { margin-left: auto; }
+  .app.closed .chev { transform: rotate(-90deg); }
+  .chev { transform: rotate(90deg); transform-origin: 10.25px 8px; }
+  .hero { grid-template-columns: 1fr; gap: 16px; }
+  .date { width: auto; display: flex; align-items: baseline; justify-content: center; gap: 10px; padding: 10px 0; }
+  .date .d { font-size: 32px; margin: 0; }
+  .date .span { position: static; background: none; color: var(--accent); padding: 0; }
+  .date.multi { padding-bottom: 10px; }
+  .hero h1 { font-size: 23px; }
+  .part-n { font-size: 40px; }
+  .part-h { flex-wrap: wrap; gap: 10px 14px; }
+  .card { padding: 16px; }
+  .card[data-k="q"] p { max-width: none; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <div class="brand-mark">S</div><div class="brand-text">Swift Daily<small>Task calendar</small></div>
+      <button class="toggle" id="themeToggle" aria-label="ライトモードにする" title="ライトモードにする">
+        <svg class="sun" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/></svg>
+        <svg class="moon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M13.5 9.6A5.5 5.5 0 0 1 6.4 2.5a5.5 5.5 0 1 0 7.1 7.1Z"/></svg>
+      </button>
+      <button class="toggle" id="railToggle" aria-expanded="true" aria-label="カレンダーを閉じる" title="カレンダーを閉じる">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="2.5" width="13" height="11" rx="2.5"/><path d="M6 2.5v11"/><path class="chev" d="M11 6.5 9.5 8l1.5 1.5"/></svg>
+      </button>
+    </div>
+    <div class="rail-body">
+    <div>
+      <div class="mhead">
+        <div class="mnum" id="mnum"></div>
+        <div class="mtxt"><b id="mname"></b><span id="myear"></span></div>
+        <div class="nav">
+          <button id="prev" aria-label="前の月">‹</button>
+          <button id="todayBtn">今日</button>
+          <button id="next" aria-label="次の月">›</button>
+        </div>
+      </div>
+    </div>
+    <div class="cal">
+      <div class="dow"><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div><div>SUN</div></div>
+      <div id="weeks"></div>
+      <div class="legend"><span><i style="background:var(--doing)"></i>取り組み中</span><span><i style="background:var(--done)"></i>完了</span></div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="list"><h3 id="listTitle"></h3><div id="items"></div></div>
+    </div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+const TASKS = __TASKS_JSON__;
+const TODAY = "__TODAY__";
+const DOW_JA = ["日", "月", "火", "水", "木", "金", "土"];
+const DOW_EN = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const MONTH_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+const parse = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const dayDiff = (a, b) => Math.round((b - a) / 864e5);
+const span = t => dayDiff(parse(t.start), parse(t.end)) + 1;
+const md = d => `${d.getMonth() + 1}/${d.getDate()}（${DOW_JA[d.getDay()]}）`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const inMonth = (t, y, m) => parse(t.start) <= new Date(y, m + 1, 0) && parse(t.end) >= new Date(y, m, 1);
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} },
+};
+
+let selected = null;
+let view = (() => { const d = parse(TASKS.length ? TASKS[TASKS.length - 1].start : TODAY); return new Date(d.getFullYear(), d.getMonth(), 1); })();
+
+/* ---------- カレンダー ---------- */
+function renderRail() {
+  const y = view.getFullYear(), m = view.getMonth();
+  document.getElementById("mnum").textContent = String(m + 1).padStart(2, "0");
+  document.getElementById("mname").textContent = MONTH_EN[m];
+  document.getElementById("myear").textContent = y;
+  const first = addDays(view, -((view.getDay() + 6) % 7));
+  const weeksEl = document.getElementById("weeks");
+  weeksEl.innerHTML = "";
+  for (let w = 0; w < 6; w++) {
+    const ws = addDays(first, w * 7), we = addDays(ws, 6);
+    if (w > 0 && ws.getMonth() !== m) break;
+    let html = '<div class="wd">';
+    for (let i = 0; i < 7; i++) {
+      const d = addDays(ws, i);
+      html += `<div class="${d.getMonth() !== m ? "out" : ""} ${iso(d) === TODAY ? "today" : ""}"><span>${d.getDate()}</span></div>`;
+    }
+    html += '</div><div class="lanes">';
+    const lanes = []; // 段ごとに、最後に置いた帯の終わりの列
+    TASKS.filter(t => parse(t.start) <= we && parse(t.end) >= ws).forEach(t => {
+      const s = Math.max(0, dayDiff(ws, parse(t.start))), e = Math.min(6, dayDiff(ws, parse(t.end)));
+      let lane = lanes.findIndex(end => end < s);
+      if (lane < 0) { lane = lanes.length; lanes.push(e); } else lanes[lane] = e;
+      const cls = ["bar", t.statusKind, parse(t.start) < ws ? "cl" : "", parse(t.end) > we ? "cr" : "", selected === t.id ? "sel" : ""].join(" ");
+      html += `<button class="${cls}" style="grid-row:${lane + 1};grid-column:${s + 1}/${e + 2}" data-id="${t.id}" title="${esc(md(parse(t.start)) + " " + t.short)}" aria-label="${esc(t.short)}"></button>`;
+    });
+    weeksEl.insertAdjacentHTML("beforeend", `<div class="week">${html}</div></div>`);
+  }
+  weeksEl.querySelectorAll(".bar").forEach(b => b.onclick = () => select(b.dataset.id));
+
+  const items = TASKS.filter(t => inMonth(t, y, m)).reverse();
+  const daysWorked = new Set();
+  items.forEach(t => { for (let i = 0; i < span(t); i++) { const d = addDays(parse(t.start), i); if (d.getMonth() === m) daysWorked.add(iso(d)); } });
+  document.getElementById("stats").innerHTML = [
+    [items.length, "課題"], [items.filter(t => t.statusKind === "done").length, "完了"], [daysWorked.size, "取り組んだ日"],
+  ].map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+
+  document.getElementById("listTitle").textContent = `${m + 1}月の課題`;
+  const el = document.getElementById("items");
+  el.innerHTML = items.length ? items.map(t => {
+    const s = parse(t.start);
+    const sub = span(t) > 1 ? `${span(t)} DAYS` : DOW_EN[s.getDay()];
+    return `<button class="item ${selected === t.id ? "sel" : ""}" data-id="${t.id}">
+      <span class="d">${s.getMonth() + 1}/${s.getDate()}<small>${sub}</small></span>
+      <span class="t"><span class="dot ${t.statusKind}"></span>${esc(t.short)}</span></button>`;
+  }).join("") : '<div class="empty">この月の課題はありません。</div>';
+  el.querySelectorAll(".item").forEach(b => b.onclick = () => select(b.dataset.id));
+}
+
+/* ---------- 課題本文 ---------- */
+const KINDS = /^(構造体|プロトコル|画面|関数|列挙型|クラス)\s*(.*)$/;
+
+function heroHTML(t, frag) {
+  const s = parse(t.start), n = span(t);
+  // 本文の先頭の引用（1文の要約）と箇条書き（作業場所・想定時間など）を、見出しの部品にする
+  let lead = "", facts = [], notes = [];
+  while (frag.firstElementChild && frag.firstElementChild.tagName !== "H2") {
+    const el = frag.firstElementChild; el.remove();
+    if (el.tagName === "BLOCKQUOTE") lead = el.innerHTML;
+    else if (el.tagName === "UL") el.querySelectorAll(":scope > li").forEach(li => {
+      const [k, ...rest] = li.innerHTML.split("：");
+      if (rest.length && k.length <= 6) facts.push([k, rest.join("：")]); else notes.push(li.innerHTML);
+    });
+    else notes.push(el.innerHTML);
+  }
+  const factHTML = facts.map(([k, v]) => {
+    const parts = [...v.replace(/<[^>]+>/g, "").matchAll(/パート(\d)\s*約?([\d.]+)\s*(時間|分)/g)].map(x => (x[3] === "分" ? +x[2] : x[2] * 60));
+    if (k === "想定時間" && parts.length) {
+      const total = parts.reduce((a, b) => a + b, 0);
+      const fmt = mins => mins >= 60 ? `${+(mins / 60).toFixed(1)}h` : `${mins}m`;
+      return `<div class="fact"><span>想定時間 · ${fmt(total)}</span>
+        <div class="timebar">${parts.map(p => `<i style="width:${p / total * 100}%"></i>`).join("")}</div>
+        <div class="timelbl">${parts.map((p, i) => `<span>パート${i + 1} ${fmt(p)}</span>`).join("")}</div></div>`;
+    }
+    return `<div class="fact"><span>${esc(k)}</span><b>${v}</b></div>`;
+  }).join("");
+  return `
+    <header class="hero">
+      <div class="date ${n > 1 ? "multi" : ""}">
+        <div class="m">${MONTH_EN[s.getMonth()].slice(0, 3).toUpperCase()}</div>
+        <div class="d">${s.getDate()}</div>
+        <div class="w">${DOW_EN[s.getDay()]}</div>
+        ${n > 1 ? `<div class="span">${n} DAYS → ${parse(t.end).getMonth() + 1}/${parse(t.end).getDate()}</div>` : ""}
+      </div>
+      <div>
+        <div class="chips">
+          ${t.status ? `<span class="chip ${t.statusKind}">${esc(t.status)}</span>` : ""}
+          ${t.area ? `<span class="chip">${esc(t.area)}</span>` : ""}
+          ${n > 1 ? `<span class="chip">${md(s)} → ${md(parse(t.end))}</span>` : ""}
+        </div>
+        <h1>${esc(t.short)}</h1>
+        ${lead ? `<p class="lead">${lead.replace(/<\/?p>/g, "")}</p>` : ""}
+      </div>
+    </header>
+    ${factHTML ? `<div class="facts">${factHTML}</div>` : ""}
+    ${notes.map(x => `<p class="note">${x}</p>`).join("")}`;
+}
+
+function takeUntil(frag, tags) {
+  const out = [];
+  while (frag.firstChild && !(frag.firstChild.tagName && tags.includes(frag.firstChild.tagName))) out.push(frag.firstChild), frag.firstChild.remove();
+  return out;
+}
+
+function decorate(root, t) {
+  root.querySelectorAll("table").forEach(tb => { const w = document.createElement("div"); w.className = "tbl"; tb.replaceWith(w); w.appendChild(tb); });
+  root.querySelectorAll("a[href^='http']").forEach(a => { a.target = "_blank"; a.rel = "noopener"; });
+  root.querySelectorAll("ol").forEach(ol => {
+    ol.classList.add("steps");
+    ol.querySelectorAll(":scope > li").forEach(li => {
+      const m = li.innerHTML.match(/^\s*<strong>(.*?)<\/strong>\s*[：:]?\s*([\s\S]*)$/);
+      if (m) li.innerHTML = `<div class="st-h">${m[1]}</div>${m[2] ? `<div class="st-b">${m[2]}</div>` : ""}`;
+    });
+  });
+}
+
+function card(h3, nodes, t, partNo) {
+  const text = h3.textContent.trim();
+  const el = document.createElement("div");
+  el.className = "card";
+  let head;
+  const km = text.match(KINDS);
+  if (/^(確かめること|テスト)/.test(text)) { el.dataset.k = "test"; head = `<span class="tag">CHECK</span><span class="name plain">${esc(text)}</span><span class="count"></span>`; }
+  else if (/^説明問題/.test(text)) { el.dataset.k = "q"; head = `<span class="tag">QUESTION</span>`; }
+  else if (km && km[2]) { el.dataset.k = km[1]; head = `<span class="tag">${km[1]}</span><span class="name">${esc(km[2].replace(/`/g, ""))}</span>`; }
+  else { head = `<span class="name plain">${h3.innerHTML}</span>`; }
+  el.innerHTML = `<div class="card-h">${head}</div>`;
+  nodes.forEach(n => el.appendChild(n));
+  decorate(el, t);
+  if (el.dataset.k === "test" || el.querySelector("input[type=checkbox]")) setupChecks(el, t, partNo);
+  return el;
+}
+
+function setupChecks(el, t, partNo) {
+  const boxes = [...el.querySelectorAll("li > input[type=checkbox]")];
+  if (!boxes.length) return;
+  const count = el.querySelector(".count");
+  const update = () => { if (count) count.textContent = `${boxes.filter(b => b.checked).length} / ${boxes.length}`; };
+  boxes.forEach((b, i) => {
+    const li = b.parentElement, key = `swift-daily:${t.id}:${partNo}:${i}`;
+    li.parentElement.classList.add("checks");
+    // 「操作 → 操作 → 期待する結果」を、操作の並びと結果に分けて見せる
+    const segs = li.innerHTML.replace(/^\s*<input[^>]*>\s*/, "").split(/\s*→\s*/);
+    li.innerHTML = segs.length > 1
+      ? `<div class="flow">${segs.slice(0, -1).map(s => `<span class="act">${s}</span>`).join('<span class="arr">→</span>')}<div class="exp">${segs[segs.length - 1]}</div></div>`
+      : `<div class="flow">${segs[0]}</div>`;
+    const nb = document.createElement("input");
+    nb.type = "checkbox"; nb.checked = store.get(key) === "1";
+    nb.setAttribute("aria-label", "確かめた");
+    li.prepend(nb); li.classList.toggle("on", nb.checked);
+    nb.onchange = () => { store.set(key, nb.checked ? "1" : null); li.classList.toggle("on", nb.checked); update(); };
+    li.onclick = e => { if (e.target !== nb && !e.target.closest("a")) { nb.checked = !nb.checked; nb.onchange(); } };
+    boxes[i] = nb;
+  });
+  update();
+}
+
+function renderTask(t) {
+  const main = document.getElementById("main");
+  if (!t) { main.innerHTML = '<div class="empty">カレンダーの課題を選んでください。</div>'; return; }
+  const frag = document.createElement("div");
+  frag.innerHTML = window.marked ? marked.parse(t.body.replace(/^# .*\n/, ""), { gfm: true }) : `<div class="raw">${esc(t.body)}</div>`;
+
+  let html = heroHTML(t, frag);
+  main.innerHTML = html + '<nav class="tabs" id="tabs"></nav><div id="secs"></div>';
+  const secs = document.getElementById("secs"), tabs = document.getElementById("tabs");
+  const records = [];
+  let i = 0;
+  takeUntil(frag, ["H2"]).forEach(n => secs.appendChild(n));
+  while (frag.firstElementChild) {
+    const h2 = frag.firstElementChild; h2.remove();
+    const title = h2.textContent.trim();
+    const body = takeUntil(frag, ["H2"]);
+    if (/^(途中で|未達成|前回から)/.test(title)) { records.push([title, body]); continue; }
+    const sec = document.createElement("section");
+    sec.className = "sec"; sec.id = `sec-${i++}`;
+    const pm = title.match(/^パート(\d)\s*[：:]?\s*(.*?)\s*(?:（(?:約)?([^）]*?(?:時間|分))）)?$/);
+    let tabLabel = title.replace(/（.*?）$/, "");
+    if (pm) {
+      tabLabel = `パート${pm[1]}`;
+      sec.innerHTML = `<div class="part-h"><div class="part-n">${pm[1].padStart(2, "0")}</div><div><div class="k">PART ${pm[1]}</div><h2>${esc(pm[2])}</h2></div>${pm[3] ? `<span class="time">${esc(pm[3])}</span>` : ""}</div>`;
+      const wrap = document.createElement("div"); wrap.className = "cards";
+      const holder = document.createElement("div"); body.forEach(n => holder.appendChild(n));
+      takeUntil(holder, ["H3"]).forEach(n => { if (n.nodeType === 1) wrap.appendChild(n); });
+      while (holder.firstElementChild) {
+        const h3 = holder.firstElementChild; h3.remove();
+        wrap.appendChild(card(h3, takeUntil(holder, ["H3"]), t, pm[1]));
+      }
+      sec.appendChild(wrap);
+    } else if (/^守ること/.test(title)) {
+      tabLabel = "守ること";
+      sec.innerHTML = `<div class="sec-h"><span class="k">RULES</span><h2>${esc(title.replace(/（.*?）$/, ""))}</h2></div>`;
+      const box = document.createElement("div"); box.className = "rules"; body.forEach(n => box.appendChild(n)); decorate(box, t); sec.appendChild(box);
+    } else if (/^参考/.test(title)) {
+      sec.innerHTML = `<div class="sec-h"><span class="k">REFERENCE</span><h2>参考</h2></div>`;
+      const grid = document.createElement("div"); grid.className = "refs";
+      const holder = document.createElement("div"); body.forEach(n => holder.appendChild(n));
+      holder.querySelectorAll("li").forEach(li => {
+        const a = li.querySelector("a"); if (!a) return;
+        const desc = li.innerHTML.replace(a.outerHTML, "").replace(/^\s*[：:]\s*/, "");
+        let host = ""; try { host = new URL(a.href).hostname.replace(/^www\./, ""); } catch {}
+        grid.insertAdjacentHTML("beforeend", `<a class="ref" href="${esc(a.href)}" target="_blank" rel="noopener"><b>${a.innerHTML}</b><span>${desc}</span><small>${esc(host)} ↗</small></a>`);
+      });
+      sec.appendChild(grid);
+    } else {
+      sec.innerHTML = `<div class="sec-h"><h2>${esc(title)}</h2></div>`;
+      const box = document.createElement("div"); box.className = "generic"; body.forEach(n => box.appendChild(n)); decorate(box, t); sec.appendChild(box);
+    }
+    secs.appendChild(sec);
+    tabs.insertAdjacentHTML("beforeend", `<a href="#${t.id}" data-sec="${sec.id}">${esc(tabLabel)}</a>`);
+  }
+  if (records.length) {
+    const sec = document.createElement("section");
+    sec.className = "sec"; sec.id = `sec-${i++}`;
+    sec.innerHTML = `<div class="sec-h"><span class="k">LOG</span><h2>やりとりの記録</h2></div>`;
+    records.forEach(([title, body]) => {
+      const d = document.createElement("details"); d.className = "rec";
+      d.innerHTML = `<summary>${esc(title)}</summary>`; body.forEach(n => d.appendChild(n)); sec.appendChild(d);
+    });
+    secs.appendChild(sec);
+    tabs.insertAdjacentHTML("beforeend", `<a href="#${t.id}" data-sec="${sec.id}">記録</a>`);
+  }
+  tabs.querySelectorAll("a").forEach(a => a.onclick = e => { e.preventDefault(); document.getElementById(a.dataset.sec).scrollIntoView({ behavior: "smooth" }); });
+  if (!tabs.children.length) tabs.remove();
+  watchTabs();
+}
+
+let observer;
+function watchTabs() {
+  if (observer) observer.disconnect();
+  const links = [...document.querySelectorAll(".tabs a")];
+  if (!links.length || !("IntersectionObserver" in window)) return;
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(en => { if (en.isIntersecting) links.forEach(a => a.classList.toggle("on", a.dataset.sec === en.target.id)); });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+  links.forEach(a => observer.observe(document.getElementById(a.dataset.sec)));
+}
+
+function select(id) {
+  const t = TASKS.find(x => x.id === id) || TASKS[TASKS.length - 1];
+  selected = t ? t.id : null;
+  if (t) {
+    history.replaceState(null, "", `#${t.id}`);
+    if (!inMonth(t, view.getFullYear(), view.getMonth())) { const s = parse(t.start); view = new Date(s.getFullYear(), s.getMonth(), 1); }
+  }
+  renderRail();
+  renderTask(t);
+  window.scrollTo({ top: window.innerWidth <= 960 ? document.getElementById("main").offsetTop : 0, behavior: "instant" });
+}
+
+// カレンダーの開け閉め。閉じた状態はブラウザに覚えておく
+const app = document.querySelector(".app"), toggle = document.getElementById("railToggle");
+function setClosed(closed) {
+  app.classList.toggle("closed", closed);
+  toggle.setAttribute("aria-expanded", String(!closed));
+  const label = closed ? "カレンダーを開く" : "カレンダーを閉じる";
+  toggle.setAttribute("aria-label", label); toggle.title = label;
+  store.set("swift-daily:rail-closed", closed ? "1" : null);
+}
+toggle.onclick = () => setClosed(!app.classList.contains("closed"));
+setClosed(store.get("swift-daily:rail-closed") === "1");
+
+// ライトとダークの切り替え。選んだほうをブラウザに覚えておき、選んでいなければ OS の設定に合わせる
+const root = document.documentElement, themeBtn = document.getElementById("themeToggle");
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+function applyTheme(theme) {
+  if (theme) root.dataset.theme = theme; else delete root.dataset.theme;
+  const dark = theme ? theme === "dark" : systemDark.matches;
+  root.classList.toggle("is-dark", dark);
+  const label = dark ? "ライトモードにする" : "ダークモードにする";
+  themeBtn.setAttribute("aria-label", label); themeBtn.title = label;
+}
+themeBtn.onclick = () => {
+  const next = root.classList.contains("is-dark") ? "light" : "dark";
+  store.set("swift-daily:theme", next); applyTheme(next);
+};
+systemDark.addEventListener("change", () => applyTheme(store.get("swift-daily:theme")));
+applyTheme(store.get("swift-daily:theme"));
+
+document.getElementById("prev").onclick = () => { view = new Date(view.getFullYear(), view.getMonth() - 1, 1); renderRail(); };
+document.getElementById("next").onclick = () => { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); renderRail(); };
+document.getElementById("todayBtn").onclick = () => { const d = parse(TODAY); view = new Date(d.getFullYear(), d.getMonth(), 1); renderRail(); };
+select(decodeURIComponent(location.hash.slice(1)));
+if (window.innerWidth <= 960) window.scrollTo({ top: 0 });
+</script>
+</body>
+</html>

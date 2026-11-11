@@ -1,81 +1,95 @@
-# 課題文の見本（2026-10-28 の課題を新しい形式で書き直したもの）
+# 課題文の見本（2026-11-10 の課題を、2026-11-11 の短い形で書き直したもの）
 
-管理用の行は省いている。課題を作るときは、この見本の書き方（順番、番号、改行、ドキュメントの添え書き）に合わせる。
-
-この見本はパートに分ける前の形式である。全体の並び（守ること → パート1 → パート2、各パートの中に構造体・画面・テスト）は SKILL.md の書式と、パートに分けた見本の `tasks/2026-10-31.md` に合わせる。この見本では、関数の書き方と表の改行を参考にする。
+管理用の行は省いている。課題を作るときは、この見本の見出しの立て方（「### 種類 `型名`」）、処理の1行の書き方（「**いつ・どの関数**：何をする」）、「確かめること」のチェックリスト（「操作 → 期待する表示」）に合わせる。課題ページ（`.claude/templates/task-page.html`）は、この形を手がかりにカードを組み立てる。
 
 ---
 
-# 10/28（水）植物の水やり表を、実際のファイルに読み書きする
-- 作業場所：`1028.playground`
-- 想定時間：2時間
+# 11/10（火）「読み終えた」を、デリゲートで前の画面に返す
 
-## 要件
-### 構造体
-**1. Plant**
-- プロパティ：`name`（String、植物の名前）、`intervalDays`（Int、何日おきに水をやるか）
-- 関数：なし
-- 特記事項：エンコードとデコードができる。CodingKeys は不要。
+> 詳細画面のスイッチで決めた「読み終えた」を、デリゲートで前の画面に返し、ラベルに出します。
 
-**2. PlantStorage**（植物の一覧をファイルに保存し、読み込む構造体）
-- プロパティ：`fileURL`（URL、保存先のファイル。Documents ディレクトリの中の `plants.json`）
-- 関数：
-  - **2-1. `save(_ plants: [Plant]) throws`**
-    - 処理：植物の配列を受け取り、JSON にエンコードして、`fileURL` のファイルに書き込む。
-    - 書き込み時は `.atomic` を指定する。
-    - エンコードや書き込みに失敗したら、エラーを呼び出し元に投げる。
-  - **2-2. `load() throws -> [Plant]`**
-    - 処理：`fileURL` のファイルを読み込み、植物の配列にデコードして返す。
-    - 読み込みやデコードに失敗したら、エラーを呼び出し元に投げる。
+- 作業場所：`1110/`（iOS App・XIB + Auto Layout）
+- 想定時間：パート1 1.5時間／パート2 30分
+- パート1だけで提出してよいです。
 
-### 並べ替え問題
-テスト2で、前回の実行で残った `plants.json` を消すための関数です。
-下の行を正しい順に並べ、インデントを整えて Playground に置いてください。行の追加と削除はしません。
+## 守ること
+- `!` `try!` `as!` `try?` を使わない（`@IBOutlet` の `!` は除く）
+- `book` を書き換えるのは BookViewController だけ。BookDetailViewController は `delegate` で知らせる
+- 画面は XIB で作る。Main.storyboard には部品を置かない
+- ブランチ `1110` で PR を作る（マージは不要）
+
+## パート1：スイッチの値をデリゲートで返す（1.5時間）
+
+### 構造体 `Book`
+読みたい本1冊。今日はファイルに保存しないので、Codable は不要です。
+
+| プロパティ | 型 | 意味 |
+|---|---|---|
+| `title` | String | 本の題名 |
+| `isFinished` | Bool | 読み終えたら `true` |
+
+### プロトコル `BookDetailViewControllerDelegate`
+詳細画面が、決めた結果を知らせる相手の決まり。`AnyObject` に準拠させます。
 
 ```swift
-        print("削除に失敗しました: \(error)")
-    do {
-func deleteFileIfExists(at url: URL) {
-        return
-    }
-        try FileManager.default.removeItem(at: url)
-}
-        print("削除するファイルはありません")
-    } catch {
-    guard FileManager.default.fileExists(atPath: url.path) else {
-        print("ファイルを削除しました")
-    }
+func bookDetailViewController(_ controller: BookDetailViewController, didSave isFinished: Bool)
 ```
+- 目的：「保存」で決めた値を、`delegate` の相手に知らせる
+- 引数：`controller` は知らせる側の画面、`isFinished` は読み終えたかどうか
+- 戻り値：なし
+- 処理はプロトコルに書かず、BookViewController の extension に書く
 
-### 守ること
-- `!`、`try!`、`as!`、`try?` を使わない。
-- 型名は大文字、変数名・関数名・プロパティ名は小文字で始める。
-- 結果やエラーの print は、テストを書く側（`do`/`catch` の中）で行う。
-- ブランチを切り、今日の Playground の変更だけで PR を作る（マージは不要）。
+### 画面 `BookViewController`
+最初の画面。1冊の本の状態をラベルに出します。
 
-### テスト
-上から順に実行します。すべてのテストで、同じ PlantStorage を使います。
+- プロパティ：`book`（Book。初期値は「坊っちゃん」、`isFinished` は `false`）
+- 部品：状態のラベル、「詳細へ」ボタン
 
-| 番号 | すること | 期待する結果 |
-|---|---|---|
-| 1 | `fileURL` を print する。 | Documents ディレクトリの中の `plants.json` の場所が表示される。 |
-| 2 | 並べ替え問題の関数で `plants.json` を消す。<br>そのあと 2-2 で読み込む。 | 削除できた、またはファイルがない、というメッセージが表示される。<br>読み込みは失敗し、エラーの内容が表示される。<br>クラッシュしない。 |
-| 3 | 次の3件を 2-1 で保存する。<br>モンステラ（7日）、サボテン（14日）、バジル（2日） | 「保存しました」と表示される。 |
-| 4 | 2-2 で読み込む。 | 件数 3 と表示される。<br>3件の名前と日数が、テスト3と同じ順で表示される。 |
-| 5 | ポトス（5日）の1件だけを 2-1 で保存する。<br>そのあと 2-2 で読み込む。 | 件数 1 と表示され、ポトスだけが表示される。<br>テスト3で保存した3件は含まれない。 |
-| 6 | 空の配列を 2-1 で保存する。<br>そのあと 2-2 で読み込む。 | 失敗せず、件数 0 と表示される。 |
+1. **起動したとき**：SceneDelegate で、BookViewController を最初の画面にした UINavigationController を window に入れる
+2. **`viewDidLoad()`**：`title` を「本棚」にし、`updateLabel()` を呼ぶ
+3. **`updateLabel()`**：ラベルを「坊っちゃん：読み終えた」か「坊っちゃん：まだ読んでいない」にする。題名は `book.title` を使う
+4. **「詳細へ」を押したとき**：XIB 名を指定して BookDetailViewController を作り、`delegate` に `self` を入れて push する
+5. **`bookDetailViewController(_:didSave:)`**：`book.isFinished` を受け取った値にし、`updateLabel()` を呼ぶ
 
-## 説明問題
-1. 書き込み時に `.atomic` を指定すると、書き込みの途中でアプリが止まっても、元のファイルが壊れないのはなぜか？［検索キーワード：swift Data write atomic］
-2. テスト5で読み込んだ結果に、テスト3で保存したデータが含まれないのはなぜか？［検索キーワード：swift Data write(to:options:)］
+### 画面 `BookDetailViewController`
+読み終えたかどうかを決める画面です。
 
-答えはチャットで1〜2文ずつ書いてください。
+- プロパティ：`delegate`（BookDetailViewControllerDelegate?。`weak var` で宣言する）
+- 部品：「読み終えた」のラベル、UISwitch（XIB でオフにしておく）、「保存」ボタン
+
+1. **「保存」を押したとき**：`delegate` に、自分と UISwitch のオン・オフを渡して知らせる
+2. 続けて pop で BookViewController に戻る
+
+### 確かめること
+上から順に試し、「保存」で戻った画面のスクリーンショットを PR に貼ります。
+
+- [ ] 実行する → 「本棚」と「坊っちゃん：まだ読んでいない」が出る
+- [ ] 「詳細へ」→ スイッチをオン → 「保存」 → ラベルが「坊っちゃん：読み終えた」に変わる
+
+## パート2：開いたときにスイッチを合わせる（30分）
+
+### 画面 `BookDetailViewController`
+- プロパティを足す：`isFinished`（Bool。初期値は `false`）
+
+1. **`viewDidLoad()`**：UISwitch のオン・オフを `isFinished` に合わせる
+
+### 画面 `BookViewController`
+1. **「詳細へ」を押したとき**：push する前に、BookDetailViewController の `isFinished` に `book.isFinished` を入れる
+
+### 確かめること
+パート1の続きとして、アプリを止めずに試します。
+
+- [ ] 「詳細へ」 → スイッチがオンになっている → オフにして、「保存」を押さずに戻る → ラベルは「読み終えた」のまま
+
+### 説明問題
+2つのクラスのインスタンスがお互いを強く参照し合うと、ほかから参照されなくなっても、2つともメモリから解放されないのはなぜか？
+
+検索キーワード：`swift strong reference cycle delegate weak`
 
 ## 参考
-### 公式ドキュメント
-- [URL.documentsDirectory](https://developer.apple.com/documentation/foundation/url/documentsdirectory)：Documents ディレクトリの場所を取り出す方法（1 の `fileURL`）。
-- [JSONEncoder](https://developer.apple.com/documentation/foundation/jsonencoder)／[JSONDecoder](https://developer.apple.com/documentation/foundation/jsondecoder)：配列を JSON の Data にする方法と、元に戻す方法（2-1、2-2）。
-- [Data.write(to:options:)](https://developer.apple.com/documentation/foundation/data/write(to:options:))：Data をファイルに書き込む方法（2-1、説明問題2）。
-- [NSData.WritingOptions.atomic](https://developer.apple.com/documentation/foundation/nsdata/writingoptions/atomic)：`.atomic` を指定すると何が起きるか（説明問題1）。
-- [Data.init(contentsOf:options:)](https://developer.apple.com/documentation/foundation/data/init(contentsof:options:))：ファイルを Data として読み込む方法（2-2）。
-- [Error Handling（The Swift Programming Language）](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/)の「Propagating Errors Using Throwing Functions」：エラーを呼び出し元に投げる書き方（2-1、2-2）。
+- [Protocols](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/)：「Delegation」と「Class-Only Protocols」の節
+- [Automatic Reference Counting](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/)：`weak` を付ける理由
+- [UISwitch](https://developer.apple.com/documentation/uikit/uiswitch)：オン・オフを切り替える部品
+- [init(nibName:bundle:)](https://developer.apple.com/documentation/uikit/uiviewcontroller/init(nibname:bundle:))：XIB の画面をコードで作る
+- [pushViewController(_:animated:)](https://developer.apple.com/documentation/uikit/uinavigationcontroller/pushviewcontroller(_:animated:))：次の画面を出す
+- [popViewController(animated:)](https://developer.apple.com/documentation/uikit/uinavigationcontroller/popviewcontroller(animated:))：前の画面に戻る

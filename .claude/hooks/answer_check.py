@@ -11,6 +11,8 @@ Claude が返答を書き終えた直後に、最後の返答（last_assistant_m
 同じ返答の書き直しで MAX_BLOCKS 回続けて止めたら、止めずに利用者へ警告だけを出す。
 
 手動で確かめるとき： python3 answer_check.py --file 返答.md （問題があれば exit 1）
+課題ファイルの検査： python3 answer_check.py --task-file tasks/YYYY-MM-DD.md
+（PostToolUse では --task-hook で、tasks/ の課題ファイルを書いた直後に同じ検査をする）
 """
 import io, json, os, re, sys, tempfile
 
@@ -117,12 +119,21 @@ def to_minutes(s):
 
 
 def count_units(text):
-    steps = len(re.findall(r"\*\*\d+(?:-\d+){2,}\.\*\*", text))
-    funcs = len(re.findall(r"\*\*\d+-\d+\.\s", text))
-    tests = len(re.findall(r"^\|\s*\d+\s*\|", text, flags=re.M))
+    """作業の単位を数える。古い形（**2-1.** の番号とテストの表）と、
+    2026-11-11 からの短い形（番号付きの処理・シグネチャ・チェックリスト）の両方を数える。"""
+    q_blocks = re.findall(r"### 説明問題\n(.*?)(?=\n#{2,3} |\Z)", text, flags=re.S)
+    rest = re.sub(r"### 説明問題\n.*?(?=\n#{2,3} |\Z)", "", text, flags=re.S)
+    rest = re.sub(r"```.*?```", lambda m: "\n".join(
+        "FUNC" for line in m.group(0).splitlines() if line.strip().startswith("func ")), rest, flags=re.S)
+    steps = len(re.findall(r"\*\*\d+(?:-\d+){2,}\.\*\*", rest))
+    funcs = len(re.findall(r"\*\*\d+-\d+\.\s", rest)) + len(re.findall(r"^FUNC$", rest, flags=re.M))
+    tests = len(re.findall(r"^\|\s*\d+\s*\|", rest, flags=re.M)) + len(re.findall(r"^\s*- \[[ xX]\]", rest, flags=re.M))
+    # 短い形の処理の1行は、古い形の「関数の見出し＋手順」の2単位にあたる（11/10 の課題で古い形22単位・短い形23単位）
+    steps += 2 * len(re.findall(r"^\d+\.\s", rest, flags=re.M))
     questions = 0
-    for block in re.findall(r"### 説明問題\n(.*?)(?=\n#{2,3} |\Z)", text, flags=re.S):
-        questions += len(re.findall(r"^\d+\.", block, flags=re.M))
+    for block in q_blocks:
+        numbered = len(re.findall(r"^\d+\.", block, flags=re.M))
+        questions += numbered or len([l for l in block.splitlines() if re.search(r"[？?]\s*(?:［.*)?$", l)])
     return steps + funcs + tests + questions
 
 
@@ -131,12 +142,13 @@ def check_volume(text):
     if not m:
         return []
     line = m.group(1)
-    total = to_minutes(line)
     parts = {}
     for name in ("パート1", "パート2"):
         pm = re.search(name + r"\s*約?\s*([\d.]+\s*(?:時間|h|分))", line)
         if pm:
             parts[name] = to_minutes(pm.group(1))
+    # 「2時間（パート1 約1.5時間…）」は先頭の合計を、「パート1 1.5時間／パート2 30分」はパートの和を使う
+    total = to_minutes(line) if not line.lstrip().startswith("パート") else sum(parts.values())
     problems = []
 
     def judge(label, units, minutes):
@@ -210,7 +222,44 @@ def run_cli(path):
     sys.exit(1 if problems else 0)
 
 
+TASK_FILE_RE = re.compile(r"/tasks/\d{4}-\d{2}-\d{2}[^/]*\.md$")
+
+
+def check_task_file(text):
+    """課題ファイルの検査。口調（絵文字・感嘆符）は課題文には求めないので外す。管理用の行は見ない。"""
+    m = re.search(r"^# ", text, flags=re.M)
+    body = text[m.start():] if m else text
+    # 課題を出したあとに足す記録の節（途中で伝えた確認・未達成の条件など）は、課題文ではないので見ない
+    body = re.sub(r"(?ms)^## (?:途中で|未達成|前回から).*?(?=^## |\Z)", "", body)
+    prose = strip_code(body)
+    return check_number_refs(prose) + check_wording_required(prose) + check_volume(body)
+
+
+def run_task_hook():
+    """PostToolUse フック：Write・Edit で課題ファイル（tasks/YYYY-MM-DD.md）を書いた直後に検査する。
+    課題文はチャットに貼らず課題ページで見せるので、学習者が見る前にファイルの段階で直させる。"""
+    sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8", errors="replace")
+    data = json.load(sys.stdin)
+    path = (data.get("tool_input") or {}).get("file_path") or ""
+    if not TASK_FILE_RE.search(path) or not os.path.isfile(path):
+        sys.exit(0)
+    with open(path, encoding="utf-8") as f:
+        problems = check_task_file(f.read())
+    if problems:
+        print(json.dumps({"decision": "block", "reason":
+            f"課題ファイルの検査（answer_check.py）で次の問題が見つかりました。{path} を直してください。"
+            "直すまで課題ページを作らず、学習者に見せないでください。\n- " + "\n- ".join(problems)},
+            ensure_ascii=False))
+    sys.exit(0)
+
+
 if __name__ == "__main__":
     if len(sys.argv) == 3 and sys.argv[1] == "--file":
         run_cli(sys.argv[2])
+    if len(sys.argv) == 3 and sys.argv[1] == "--task-file":
+        problems = check_task_file(open(sys.argv[2], encoding="utf-8").read())
+        print("\n".join("- " + p for p in problems))
+        sys.exit(1 if problems else 0)
+    if len(sys.argv) == 2 and sys.argv[1] == "--task-hook":
+        run_task_hook()
     run_hook()

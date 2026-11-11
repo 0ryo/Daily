@@ -68,6 +68,18 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/answer_check.py\" --task-hook",
+            "timeout": 30
+          }
+        ]
+      }
     ]
   }
 }
