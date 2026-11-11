@@ -8,14 +8,16 @@
 import UIKit
 
 final class BookViewController: UIViewController {
-    var book = Book(title: "坊ちゃん", isFinished: false)
+    var book = Book(title: "坊ちゃん", isFinished: true)
     
     @IBOutlet private weak var bookLabel: UILabel!
     @IBAction private func toDetailButtonDidTap(_ sender: UIButton) {
         let bookDetailViewController = BookDetailViewController(nibName: "BookDetailViewController", bundle: nil)
+        bookDetailViewController.bookTitle = book.title
+        bookDetailViewController.isFinished = book.isFinished
         bookDetailViewController.delegate = self
-        
-        self.navigationController?.pushViewController(bookDetailViewController, animated: true)
+        guard let navigationController = self.navigationController else { return }
+        navigationController.pushViewController(bookDetailViewController, animated: true)
     }
 
     override func viewDidLoad() {
@@ -26,13 +28,15 @@ final class BookViewController: UIViewController {
     }
     
     private func updateLabel() {
-        bookLabel.text = "\(book.title)；\(book.isFinished ? "読み終えた" : "まだ読んでない")"
+        bookLabel.text = "\(book.title)：\(book.isFinished ? "読み終えた" : "まだ読んでない")"
     }
 }
 
-extension BookViewController {
-    book.isFinished = bookDetailViewController.isFinished
-    updateLabel()
+extension BookViewController: BookDetailViewControllerDelegate {
+    func bookDetailViewController(_ controller: BookDetailViewController, didSave isFinished: Bool) {
+        book.isFinished = isFinished
+        updateLabel()
+    }
 }
 
 

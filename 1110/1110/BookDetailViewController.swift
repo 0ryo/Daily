@@ -9,23 +9,25 @@ import UIKit
 
 class BookDetailViewController: UIViewController {
     
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet private weak var isFinishedSwitch: UISwitch!
-    @IBAction private func isFinishedSwitchValueChanged(_ sender: UISwitch) {
-        bookDetailViewController(self, didSave: sender.isOn)
-    }
     @IBAction private func saveButtonDidTap(_ sender: UIButton) {
         delegate?.bookDetailViewController(self, didSave: isFinishedSwitch.isOn)
-        self.navigationController?.popViewController(animated: true)
+        guard let navigationController = self.navigationController else { return }
+        navigationController.popViewController(animated: true)
     }
-
     weak var delegate: BookDetailViewControllerDelegate?
+    var bookTitle = ""
+    var isFinished = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        titleLabel.text = bookTitle
+        isFinishedSwitch.isOn = isFinished
     }
 }
 
-extension BookDetailViewController: BookDetailViewControllerDelegate {
+extension BookDetailViewController {
     func bookDetailViewController(_ controller: BookDetailViewController, didSave isFinished: Bool) {
         delegate?.bookDetailViewController(controller, didSave: isFinished)
     }

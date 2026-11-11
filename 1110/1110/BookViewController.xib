@@ -37,6 +37,9 @@
                     </constraints>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="tinted" title="詳細へ"/>
+                    <connections>
+                        <action selector="toDetailButtonDidTap:" destination="-1" eventType="touchUpInside" id="D7N-uP-4L2"/>
+                    </connections>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

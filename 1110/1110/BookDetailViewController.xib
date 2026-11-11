@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookDetailViewController" customModule="_110" customModuleProvider="target">
             <connections>
+                <outlet property="isFinishedSwitch" destination="OUU-En-3sJ" id="6SF-rl-eY3"/>
                 <outlet property="titleLabel" destination="66S-lP-W7o" id="eU7-Np-1IT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -37,11 +38,8 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OUU-En-3sJ">
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="OUU-En-3sJ">
                     <rect key="frame" x="153" y="182" width="63" height="28"/>
-                    <connections>
-                        <action selector="isFinishedSwitchValueChanged:" destination="-1" eventType="valueChanged" id="hEy-hU-dlc"/>
-                    </connections>
                 </switch>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hHj-ao-a4H">
                     <rect key="frame" x="159" y="269" width="75" height="35"/>
