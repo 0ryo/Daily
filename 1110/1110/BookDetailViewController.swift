@@ -7,9 +7,9 @@
 
 import UIKit
 
-class BookDetailViewController: UIViewController {
+final class BookDetailViewController: UIViewController {
     
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var isFinishedSwitch: UISwitch!
     @IBAction private func saveButtonDidTap(_ sender: UIButton) {
         delegate?.bookDetailViewController(self, didSave: isFinishedSwitch.isOn)

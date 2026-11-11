@@ -8,7 +8,7 @@
 import UIKit
 
 final class BookViewController: UIViewController {
-    var book = Book(title: "坊ちゃん", isFinished: true)
+    var book = Book(title: "坊ちゃん", isFinished: false)
     
     @IBOutlet private weak var bookLabel: UILabel!
     @IBAction private func toDetailButtonDidTap(_ sender: UIButton) {
@@ -28,7 +28,8 @@ final class BookViewController: UIViewController {
     }
     
     private func updateLabel() {
-        bookLabel.text = "\(book.title)：\(book.isFinished ? "読み終えた" : "まだ読んでない")"
+        let status = book.isFinished ? "読み終えた" : "まだ読んでない"
+        bookLabel.text = "\(book.title)：\(status)"
     }
 }
 
