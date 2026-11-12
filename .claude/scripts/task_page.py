@@ -44,7 +44,7 @@ def load(path, today):
     if "実施中" in status:
         kind, end = "doing", max(start, today)
     else:
-        kind = "done" if "完了" in status else ""
+        kind = "done" if status.startswith("完了") else ""
         end = max([start] + DATE_RE.findall(status))
     return {
         "id": path.stem,
