@@ -7,23 +7,41 @@
 
 import UIKit
 
-class BookViewController: UIViewController {
+final class BookViewController: UIViewController {
+    var book = Book(title: "坊ちゃん", isFinished: false)
+    
+    @IBOutlet private weak var bookLabel: UILabel!
+    @IBAction private func toDetailButtonDidTap(_ sender: UIButton) {
+        let bookDetailViewController = BookDetailViewController(nibName: "BookDetailViewController", bundle: nil)
+        bookDetailViewController.bookTitle = book.title
+        bookDetailViewController.isFinished = book.isFinished
+        bookDetailViewController.delegate = self
+        guard let navigationController = self.navigationController else { return }
+        navigationController.pushViewController(bookDetailViewController, animated: true)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        self.title = "本棚"
+        updateLabel()
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    private func updateLabel() {
+        let status = book.isFinished ? "読み終えた" : "まだ読んでない"
+        bookLabel.text = "\(book.title)：\(status)"
     }
-    */
+}
 
+extension BookViewController: BookDetailViewControllerDelegate {
+    func bookDetailViewController(_ controller: BookDetailViewController, didSave isFinished: Bool) {
+        book.isFinished = isFinished
+        updateLabel()
+    }
+}
+
+
+struct Book {
+    let title: String
+    var isFinished: Bool
 }
