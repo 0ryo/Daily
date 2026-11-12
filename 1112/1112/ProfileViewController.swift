@@ -9,10 +9,10 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     var nickname: String? = nil
-    let editViewController = NicknameEditViewController()
     
     @IBOutlet private weak var nameLabel: UILabel!
     @IBAction private func changeButtonDidTap(_ sender: UIButton) {
+        let editViewController = NicknameEditViewController()
         editViewController.delegate = self
         self.navigationController?.pushViewController(editViewController, animated: true)
     }
@@ -24,7 +24,7 @@ final class ProfileViewController: UIViewController {
         updateLabel()
     }
     
-    func updateLabel() {
+    private func updateLabel() {
         if let nickname = nickname {
             nameLabel.text = "ニックネーム：\(nickname)"
         } else {
