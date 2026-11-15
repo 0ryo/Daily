@@ -18,6 +18,11 @@ class PlantListViewController: UIViewController {
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.dataSource = self
+        tableView.delegate = self
+    }
+    
+    private func updateView() {
+        tableView.reloadData()
     }
 }
 
@@ -36,9 +41,18 @@ extension PlantListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let plantEditViewController = PlantEditViewController()
+        let plantEditViewController = PlantEditViewController(plant: plants[indexPath.row], index: indexPath.row)
+        plantEditViewController.delegate = self
         navigationController?.pushViewController(plantEditViewController, animated: true)
+        
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension PlantListViewController: PlantEditViewControllerDelegate {
+    func plantEditViewController(_ controller: PlantEditViewController, didSave plant: Plant, at index: Int) {
+        self.plants[index] = plant
+        updateView()
     }
 }
 
