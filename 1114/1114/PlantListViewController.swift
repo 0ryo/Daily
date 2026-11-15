@@ -9,16 +9,26 @@ import UIKit
 
 class PlantListViewController: UIViewController {
     let reuseIdentifier = "PlantListCell"
-    var plants: [Plant] = Plant.samples
+    let store = PlantStore()
+    var plants: [Plant] = []
     @IBOutlet private weak var tableView: UITableView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "植物"
         
+        do {
+            plants = try store.load()
+        } catch {
+            self.title = "植物(読み込み失敗)"
+            plants = []
+        }
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
+        
+        updateView()
     }
     
     private func updateView() {
@@ -53,6 +63,11 @@ extension PlantListViewController: PlantEditViewControllerDelegate {
     func plantEditViewController(_ controller: PlantEditViewController, didSave plant: Plant, at index: Int) {
         self.plants[index] = plant
         updateView()
+        do{
+            try store.save(plants)
+        } catch {
+            self.title = "植物(保存失敗)"
+        }
     }
 }
 
