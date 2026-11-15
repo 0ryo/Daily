@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PlantListViewController: UIViewController {
+final class PlantListViewController: UIViewController {
     let reuseIdentifier = "PlantListCell"
     let store = PlantStore()
     var plants: [Plant] = []

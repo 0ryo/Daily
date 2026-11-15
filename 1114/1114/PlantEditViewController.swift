@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PlantEditViewController: UIViewController {
+final class PlantEditViewController: UIViewController {
     
     @IBOutlet private weak var nameTextLabel: UILabel!
     @IBOutlet private weak var memoField: UITextField!
