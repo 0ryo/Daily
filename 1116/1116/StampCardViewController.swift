@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StampCardViewController: UIViewController {
+final class StampCardViewController: UIViewController {
     var card = StampCard(stampCount: 0, goal: 10)
     let spacing: CGFloat = 16
     

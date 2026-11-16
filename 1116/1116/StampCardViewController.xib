@@ -46,11 +46,11 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="cKi-dm-60w" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="0Kz-sI-PBp"/>
+                <constraint firstItem="cKi-dm-60w" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="0Kz-sI-PBp"/>
                 <constraint firstItem="cKi-dm-60w" firstAttribute="top" secondItem="Zqx-4q-Gf7" secondAttribute="bottom" constant="16" id="1oP-S5-Gxi"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="g6J-JK-5iD" secondAttribute="trailing" constant="16" id="38H-bN-pEm"/>
                 <constraint firstItem="g6J-JK-5iD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="LN1-ZM-xud"/>
-                <constraint firstItem="Zqx-4q-Gf7" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Qu5-w9-aHb"/>
+                <constraint firstItem="Zqx-4q-Gf7" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Qu5-w9-aHb"/>
                 <constraint firstItem="g6J-JK-5iD" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="VhR-eT-HpN"/>
                 <constraint firstItem="Zqx-4q-Gf7" firstAttribute="top" secondItem="g6J-JK-5iD" secondAttribute="bottom" constant="16" id="rcW-SL-vXF"/>
             </constraints>
