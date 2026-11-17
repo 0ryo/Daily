@@ -1,0 +1,97 @@
+//
+//  BookListViewController.swift
+//  1117
+//
+//  Created by 伊藤瞭汰 on 2026/11/17.
+//
+
+import UIKit
+
+final class BookListViewController: UIViewController {
+    
+    let reuseIdentifier = "BookCell"
+    let store = BookStore()
+    var book: [Book] = []
+    
+    @IBOutlet private weak var tableView: UITableView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "本"
+        
+        do{
+            book = try store.load()
+        } catch {
+            self.title = "本(読み込み失敗)"
+            print("読み込みに失敗しました:\(error)")
+        }
+        
+        tableView.reloadData()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+}
+
+extension BookListViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return book.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let content = book[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        var config = cell.defaultContentConfiguration()
+        config.text = "\(content.title)：\(content.impression)"
+        cell.contentConfiguration = config
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let bookEditViewController = BookEditViewController(book: book[indexPath.row], index: indexPath.row)
+        bookEditViewController.delegate = self
+        self.navigationController?.pushViewController(bookEditViewController, animated: true)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension BookListViewController: BookEditViewControllerDelegate {
+    func bookEditViewController(_ controller: BookEditViewController, didSave book: Book, at index: Int) {
+        self.book[index] = book
+        tableView.reloadData()
+        do {
+            try store.save(self.book)
+        } catch {
+            self.title = "本(保存失敗)"
+        }
+    }
+}
+
+struct Book: Codable {
+    let title: String
+    var impression: String
+    
+    static let samples: [Book] = [
+        Book(title: "星の地図", impression: "図が多くて読みやすい"),
+        Book(title: "海辺の図書館", impression: "最後の章が良かった"),
+        Book(title: "雨の日の数学", impression: "途中で難しくなった"),
+    ]
+}
+
+struct BookStore {
+    let fileURL = URL.documentsDirectory.appendingPathComponent("books.json")
+    
+    func save(_ books: [Book]) throws {
+        let data = try JSONEncoder().encode(books)
+        try data.write(to: fileURL, options: .atomic)
+    }
+    
+    func load() throws -> [Book] {
+        guard FileManager.default.fileExists(atPath: fileURL.path) else { return Book.samples }
+        
+        let json = try Data(contentsOf: fileURL)
+        let books = try JSONDecoder().decode([Book].self, from: json)
+        return books
+    }
+}
