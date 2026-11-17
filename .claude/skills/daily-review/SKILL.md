@@ -28,7 +28,7 @@ allowed-tools: Read Write Edit Agent Bash(python3 .claude/scripts/teacher_contex
 
 ## 2. 今日書いたコードを特定する
 1. 課題ファイルの「基準コミット」を読む。
-2. AIなし課題の場合は締め切り（開始時刻＋制限時間）を課題ファイルから読み、`git rev-list -1 --before="<締め切り>" HEAD` で締め切り前の最後のコミットを採点対象にする。締め切り後の変更は採点しない（未コミットの変更も採点しない）。経過時間を記録する。
+2. AIなし課題の初回の提出では、締め切り（開始時刻＋制限時間）を課題ファイルから読み、`git rev-list -1 --before="<締め切り>" HEAD` で締め切り前の最後のコミットを対象にする。経過時間を記録する。CP の結果の書き方は test-noai の「4. 採点」に従う。再提出は通常の課題と同じく最新のコミットを採点する。
 3. 通常の課題の場合は、次の3つを合わせて「今日の差分」とする。
    - `git diff --stat <基準コミット> -- . ':!tasks' ':!reviews' ':!progress' ':!.claude' ':!plan' ':!CLAUDE.md' ':!README.md'` と、同じ範囲の `git diff`（作業ツリーと比べるため、コミット済みと未コミットの変更の両方を含む）
    - `git ls-files --others --exclude-standard`（未追跡のファイル）
