@@ -9,8 +9,8 @@ import UIKit
 
 final class BookEditViewController: UIViewController {
     
-    let book: Book
-    let index: Int
+    private let book: Book
+    private let index: Int
     weak var delegate: BookEditViewControllerDelegate?
     
     @IBOutlet private weak var titleLabel: UILabel!

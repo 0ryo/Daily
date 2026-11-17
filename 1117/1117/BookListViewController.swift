@@ -9,9 +9,9 @@ import UIKit
 
 final class BookListViewController: UIViewController {
     
-    let reuseIdentifier = "BookCell"
-    let store = BookStore()
-    var book: [Book] = []
+    private let reuseIdentifier = "BookCell"
+    private let store = BookStore()
+    private var books: [Book] = []
     
     @IBOutlet private weak var tableView: UITableView!
     
@@ -20,7 +20,7 @@ final class BookListViewController: UIViewController {
         self.title = "本"
         
         do{
-            book = try store.load()
+            books = try store.load()
         } catch {
             self.title = "本(読み込み失敗)"
         }
@@ -34,11 +34,11 @@ final class BookListViewController: UIViewController {
 
 extension BookListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return book.count
+        return books.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let content = book[indexPath.row]
+        let content = books[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         var config = cell.defaultContentConfiguration()
         config.text = "\(content.title)：\(content.impression)"
@@ -47,7 +47,7 @@ extension BookListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let bookEditViewController = BookEditViewController(book: book[indexPath.row], index: indexPath.row)
+        let bookEditViewController = BookEditViewController(book: books[indexPath.row], index: indexPath.row)
         bookEditViewController.delegate = self
         self.navigationController?.pushViewController(bookEditViewController, animated: true)
         
@@ -57,10 +57,10 @@ extension BookListViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension BookListViewController: BookEditViewControllerDelegate {
     func bookEditViewController(_ controller: BookEditViewController, didSave book: Book, at index: Int) {
-        self.book[index] = book
+        self.books[index] = book
         tableView.reloadData()
         do {
-            try store.save(self.book)
+            try store.save(self.books)
         } catch {
             self.title = "本(保存失敗)"
         }
