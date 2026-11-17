@@ -23,7 +23,6 @@ final class BookListViewController: UIViewController {
             book = try store.load()
         } catch {
             self.title = "本(読み込み失敗)"
-            print("読み込みに失敗しました:\(error)")
         }
         
         tableView.reloadData()
@@ -77,21 +76,4 @@ struct Book: Codable {
         Book(title: "海辺の図書館", impression: "最後の章が良かった"),
         Book(title: "雨の日の数学", impression: "途中で難しくなった"),
     ]
-}
-
-struct BookStore {
-    let fileURL = URL.documentsDirectory.appendingPathComponent("books.json")
-    
-    func save(_ books: [Book]) throws {
-        let data = try JSONEncoder().encode(books)
-        try data.write(to: fileURL, options: .atomic)
-    }
-    
-    func load() throws -> [Book] {
-        guard FileManager.default.fileExists(atPath: fileURL.path) else { return Book.samples }
-        
-        let json = try Data(contentsOf: fileURL)
-        let books = try JSONDecoder().decode([Book].self, from: json)
-        return books
-    }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BookEditViewController: UIViewController {
+final class BookEditViewController: UIViewController {
     
     let book: Book
     let index: Int
