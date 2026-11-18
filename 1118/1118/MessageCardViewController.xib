@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_9" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MessageCardViewController" customModule="_118" customModuleProvider="target">
+            <connections>
+                <outlet property="formStackView" destination="f7v-UU-5Vw" id="YaV-fa-8fh"/>
+                <outlet property="fromField" destination="ID4-Wr-iBH" id="Imf-RM-1x3"/>
+                <outlet property="messageField" destination="XSW-6w-ZVG" id="a94-jU-yoZ"/>
+                <outlet property="previewLabel" destination="nY8-W2-amF" id="iBj-Kt-8qV"/>
+                <outlet property="toField" destination="7PK-9m-wML" id="tIx-NQ-2r2"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="f7v-UU-5Vw">
+                    <rect key="frame" x="16" y="702" width="340" height="170"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="宛名" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7PK-9m-wML">
+                            <rect key="frame" x="0.0" y="0.0" width="340" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="340" id="RlZ-pm-YRL"/>
+                                <constraint firstAttribute="height" constant="34" id="s9t-P3-QPk"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <textField opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="差出人" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ID4-Wr-iBH">
+                            <rect key="frame" x="0.0" y="50" width="340" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="340" id="IDE-u4-iKt"/>
+                                <constraint firstAttribute="height" constant="34" id="bI4-en-qZU"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <textField opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="top" borderStyle="roundedRect" placeholder="メッセージ" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XSW-6w-ZVG">
+                            <rect key="frame" x="0.0" y="100" width="340" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="GU7-RJ-ZOf"/>
+                                <constraint firstAttribute="width" constant="340" id="qiO-Np-SH5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        </textField>
+                    </subviews>
+                </stackView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nY8-W2-amF">
+                    <rect key="frame" x="16" y="140" width="340" height="20.333333333333343"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <keyboardLayoutGuide key="keyboard" id="BUk-Xk-ca1"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="nY8-W2-amF" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="BID-Wm-EzT"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="nY8-W2-amF" secondAttribute="trailing" constant="16" id="GdY-BR-JeU"/>
+                <constraint firstItem="nY8-W2-amF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Txv-MD-WtI"/>
+                <constraint firstItem="BUk-Xk-ca1" firstAttribute="top" secondItem="f7v-UU-5Vw" secondAttribute="bottom" constant="16" id="hGk-H6-oJL"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="f7v-UU-5Vw" secondAttribute="trailing" constant="16" id="y5y-aS-mC0"/>
+                <constraint firstItem="f7v-UU-5Vw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="yYg-dG-Sff"/>
+            </constraints>
+            <point key="canvasLocation" x="-104" y="150"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
