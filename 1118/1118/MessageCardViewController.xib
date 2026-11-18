@@ -24,39 +24,27 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="f7v-UU-5Vw">
-                    <rect key="frame" x="16" y="702" width="340" height="170"/>
+                    <rect key="frame" x="16" y="738" width="408" height="134"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="宛名" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7PK-9m-wML">
-                            <rect key="frame" x="0.0" y="0.0" width="340" height="34"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="340" id="RlZ-pm-YRL"/>
-                                <constraint firstAttribute="height" constant="34" id="s9t-P3-QPk"/>
-                            </constraints>
+                            <rect key="frame" x="0.0" y="0.0" width="408" height="34"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="next"/>
                         </textField>
                         <textField opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="差出人" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ID4-Wr-iBH">
-                            <rect key="frame" x="0.0" y="50" width="340" height="34"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="340" id="IDE-u4-iKt"/>
-                                <constraint firstAttribute="height" constant="34" id="bI4-en-qZU"/>
-                            </constraints>
+                            <rect key="frame" x="0.0" y="50" width="408" height="34"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="next"/>
                         </textField>
                         <textField opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="top" borderStyle="roundedRect" placeholder="メッセージ" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XSW-6w-ZVG">
-                            <rect key="frame" x="0.0" y="100" width="340" height="70"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="70" id="GU7-RJ-ZOf"/>
-                                <constraint firstAttribute="width" constant="340" id="qiO-Np-SH5"/>
-                            </constraints>
+                            <rect key="frame" x="0.0" y="100" width="408" height="34"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
                         </textField>
                     </subviews>
                 </stackView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nY8-W2-amF">
-                    <rect key="frame" x="16" y="140" width="340" height="20.333333333333343"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nY8-W2-amF">
+                    <rect key="frame" x="16" y="140" width="408" height="20.333333333333343"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
