@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MenuViewController: UIViewController {
+final class MenuViewController: UIViewController {
     
     @IBAction private func toTallyViewButtonDidTap(_ sender: UIButton) {
         let tallyViewController = TallyViewController()

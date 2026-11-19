@@ -7,9 +7,9 @@
 
 import UIKit
 
-class TallyViewController: UIViewController {
+final class TallyViewController: UIViewController {
 
-    let counter = TallyCounter()
+    private let counter = TallyCounter()
     
     @IBOutlet private weak var countLabel: UILabel!
     @IBAction private func plusButtonDidTap(_ sender: UIButton) {
