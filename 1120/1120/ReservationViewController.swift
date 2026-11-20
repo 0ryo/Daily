@@ -7,19 +7,20 @@
 
 import UIKit
 
-enum ReservationError: Error {
+private enum ReservationError: Error {
     case invalidName
     case invalidPeople
 }
 
-class ReservationViewController: UIViewController {
+final class ReservationViewController: UIViewController {
     
     @IBOutlet private weak var nameField: UITextField!
     @IBOutlet private weak var peopleField: UITextField!
     @IBOutlet private weak var noteField: UITextField!
     @IBAction func resaveButtonDidTap(_ sender: UIButton) {
         self.view.endEditing(true)
-        let people = Int(peopleField.text ?? "") ?? 0
+        let trimmedPeople = (peopleField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let people = Int(trimmedPeople) ?? 0
         do {
             let reservation = try Reservation(name: nameField.text ?? "", people: people, note: noteField.text ?? "")
             resultLabel.text = "\(reservation.name)さん \(reservation.people)名で予約しました"
@@ -40,21 +41,45 @@ class ReservationViewController: UIViewController {
         super.viewDidLoad()
         self.title = "料理教室予約ページ"
         resultLabel.text = "名前と人数を入力してください"
+        
+        nameField.delegate = self
+        peopleField.delegate = self
+        noteField.delegate = self
     }
 }
 
-struct Reservation {
+extension ReservationViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard textField != noteField else {
+            self.view.endEditing(true)
+            return true
+        }
+        
+        textField.resignFirstResponder()
+        if textField == nameField {
+            peopleField.becomeFirstResponder()
+        }
+        if textField == peopleField {
+            noteField.becomeFirstResponder()
+        }
+        
+        return true
+    }
+}
+
+private struct Reservation {
     let name: String
     let people: Int
     let note: String
     
     init(name: String, people: Int, note: String) throws {
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmedName.count > 0 && trimmedName.count <= 20 else { throw ReservationError.invalidName }
-        guard people > 1 && people <= 4 else { throw ReservationError.invalidPeople }
+        guard people > 0 && people <= 4 else { throw ReservationError.invalidPeople }
         
-        self.name = name
+        self.name = trimmedName
         self.people = people
-        self.note = note
+        self.note = trimmedNote
     }
 }
