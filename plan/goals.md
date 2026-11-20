@@ -16,9 +16,10 @@
 ## 長期目標（2027-03-31 まで）
 年収700万円帯の iOS エンジニア求人が求める技術要件のうち、実務年数とマネジメント経験を除くすべてを、成果物（公開アプリ・リポジトリ・記事・PR）で示せる状態にする。要件と証拠の対応は [requirements.md](requirements.md) で管理する（requirements.md の「示す週」の列は旧計画の週で、目安として残している）。
 
-- 主な成果物：App1（UIKit 主体、App Store で公開）、App2（SwiftUI 主体、TestFlight で配信）、技術記事3本、OSS への PR 2件、毎日の課題と PR。
-- 学習時間の配分の目安（全期間）：UIKit 30%、SwiftUI 17%、相互運用 5%、共通 47%。累計が目安から20%以上ずれたら /week で指摘する。
-- 毎日の学習時間の基準：平日2.5h、土日6.5h（週25h）。
+- 主な成果物：App1（WearLog。UIKit 主体、App Store で公開。仕様と Phase は [app-roadmap.md](app-roadmap.md)）、App2（SwiftUI 主体、TestFlight で配信）、技術記事3本、OSS への PR 2件、毎日の課題と PR。
+- 学習時間の配分の目安（全期間）：UIKit 30%、SwiftUI 17%、相互運用 5%、共通 47%。累計が目安から20%以上ずれたら /week で指摘する。ただし WearLog の開発期間（App1 の公開まで）は UIKit・RxSwift・MVVM 中心を許し、配分のずれとみなさない（2026-11-20 に学習者が承認）。
+- 毎日の学習時間の基準：平日2.5h、土日4.5h（週21.5h）。課題の想定時間は、平日2h、土日4h（どちらも1日1 PR）。2026-11-20 に学習者と決めた。
+- 毎日の課題の進め方（2026-11-20 に学習者と決めた）：WearLog を1日1 PR ずつ育てる。レビューで大きな弱点が見つかった翌日だけ、その弱点に絞った1日限定のドリルにする。
 - 月1回の AIなし課題（CP）と人間レビュー（HR）の決まりは [checkpoints.md](checkpoints.md)、採点は [rubric.md](rubric.md) に従う。
 
 ## 中期目標（月ごと）
@@ -39,18 +40,22 @@
 - 表示用の状態と処理を ViewModel に分け、依存を protocol で差し替えてユニットテストできる（Swift Testing と XCTest）。
 - CP2（画面遷移・デリゲート・Codable 保存、120分）を解く。
 - 10月からの持ち越し（2026-10-31 に学習者が承認）：UIKit のアプリで保存したデータを再起動後に同じ順番で復元する。UIViewController のライフサイクルのメソッドが呼ばれる順番を確かめて説明できる。return キーで次の入力欄へ移る。HR1（勉強会で自分のコードに1件以上コメントをもらう）。11月が詰まるため、UICollectionView を12月に回すかを11月の途中の /week で決める。
+- 2026-11-20 の方針変更（学習者が承認）：11/21 から、App1 の WearLog を1日1 PR ずつ作る形に切り替えた。上の項目のうち、ViewModel・protocol での差し替え・ユニットテストは WearLog の Phase 3・5 で扱う。コードだけで Auto Layout を組む項目は、学習者の会社が XIB を使うため扱わない。UICollectionView は WearLog では使わず、App1 の公開後の候補にする。
+- 11/21〜11/30：WearLog の Phase 1（服の一覧・登録・詳細・編集を XIB とインメモリのモデルで作る）を終え、Phase 2 の保存に入る。
 
-### 12月（〜12/31）：非同期・リアクティブと App1 の実装
-- `async`/`await` と `URLSession` で API の JSON を取得し、読み込み中・成功・空・失敗・再試行を ViewModel で表せる。`@MainActor` の理由を説明できる。
-- RxSwift で ViewModel の入力と出力をバインドし、Combine の基本を読める。async/await との対応を説明できる。
-- Apple Developer Program に登録する。HR2（OSS への最初の PR）。
-- App1（UIKit 主体）の要件・設計を決め（HR3：設計レビュー）、一覧・詳細・編集・保存・API 通信・RxSwift の検索・Firebase を実装する。
-- CP3（MVVM・async/await・ユニットテスト、150分）を解く。
+### 12月（〜12/31）：WearLog の Phase 2〜5（App1 の実装）
+- Phase 2：写真の選択と保存、コーデの記録と服の紐付け、着用回数と洗濯リセット、パンツのランキングの集計、Codable での保存を作る。
+- Phase 3：画面を Kickstarter の形（Inputs／Outputs／ViewModelType）の ViewModel に分け、保存と天気の取得を protocol で差し替えられるようにする。`async`/`await` と `URLSession` で Open-Meteo の天気を取得し、読み込み中・失敗・再試行を ViewModel で表せる。`@MainActor` の理由を説明できる。
+- Phase 4：RxSwift・RxCocoa を SPM で入れ、ViewModel の入力と出力を Rx にする。服の検索を Rx で作る。`DisposeBag` と `[weak self]` で解放を確かめる。
+- Phase 5：着用回数・ランキング・ViewModel・天気のユニットテストを書き、エラー処理を整える。
+- Apple Developer Program に登録する。HR2（OSS への最初の PR）。HR3（WearLog の設計レビュー：データモデルと画面遷移を人に見せる）。
+- CP3（MVVM・async/await・ユニットテスト、150分）を、Phase 3 の終わりの翌日に解く（12/12 の前後）。
+- Combine の基本を読むこと、Firebase は App1 の公開後の候補にする。
 
 ### 1月（〜1/31）：App1 の公開と SwiftUI 入門
-- GitHub Actions と Fastlane で CI/CD を整え、App1 を TestFlight で配信する。
-- Instruments・アクセシビリティを点検し、審査に提出して、**App1 を App Store で公開する**。技術記事1を公開する。HR4（3人以上に使ってもらう）。
-- SwiftUI の View・レイアウト・`@State` を使い、簡単な画面を教材を見ずに組める。
+- GitHub Actions と Fastlane で CI/CD を整え、App1（WearLog）を TestFlight で配信する。
+- Instruments・アクセシビリティを点検し、審査に提出して、**App1 を App Store で公開する**（12月の Phase が遅れたときは、2月上旬までに公開する）。技術記事1を公開する。HR4（3人以上に使ってもらう）。
+- SwiftUI の View・レイアウト・`@State` を使い、簡単な画面を教材を見ずに組める（App1 を審査に出した後に始める）。
 - CP4（UIKit の総合、XIB なし、150分）を解く。
 
 ### 2月（〜2/28）：SwiftUI と相互運用、App2 の設計
@@ -65,5 +70,5 @@
 - CP6（総合、180分）を解く。requirements.md の全行に証拠を記入し、最終目標を判定する。
 
 ## 短期目標（週ごと）
-- 今週：[short-term/week-05.md](short-term/week-05.md)
+- 今週：[short-term/week-06.md](short-term/week-06.md)（11/21 から。WearLog の Phase 1）
 - 書き方：`plan/short-term/` の既存の週ファイルと同じ形（目標・課題表・完了条件・持ち越し）にする。/week が週末に、その週の判定のあと来週の分を作って保存する（チャットには出さない）。
