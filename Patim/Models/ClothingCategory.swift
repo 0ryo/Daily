@@ -1,5 +1,5 @@
 //
-//  ClothingItem.swift
+//  ClothingCategory.swift
 //  Patim
 //
 //  Created by 伊藤瞭汰 on 2026/11/21.
@@ -19,11 +19,4 @@ enum ClothingCategory {
         case .other: return "その他"
         }
     }
-}
-
-struct ClothingItem {
-    let name: String
-    let brand: String
-    let category: ClothingCategory
-    let isReusableBeforeWash: Bool
 }

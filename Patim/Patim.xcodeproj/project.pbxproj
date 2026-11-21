@@ -29,6 +29,21 @@
 			path = Patim;
 			sourceTree = "<group>";
 		};
+		EC63980C30B1CF4400FE917E /* Features */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Features;
+			sourceTree = "<group>";
+		};
+		EC63980E30B1CFA400FE917E /* Models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EC63981330B1D26400FE917E /* Services */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +60,9 @@
 		EC6397E030B1BCBD00FE917E = {
 			isa = PBXGroup;
 			children = (
+				EC63981330B1D26400FE917E /* Services */,
+				EC63980E30B1CFA400FE917E /* Models */,
+				EC63980C30B1CF4400FE917E /* Features */,
 				EC6397EB30B1BCBD00FE917E /* Patim */,
 				EC6397EA30B1BCBD00FE917E /* Products */,
 			);
@@ -75,6 +93,9 @@
 			);
 			fileSystemSynchronizedGroups = (
 				EC6397EB30B1BCBD00FE917E /* Patim */,
+				EC63980C30B1CF4400FE917E /* Features */,
+				EC63980E30B1CFA400FE917E /* Models */,
+				EC63981330B1D26400FE917E /* Services */,
 			);
 			name = Patim;
 			packageProductDependencies = (

@@ -8,7 +8,7 @@
 import UIKit
 
 final class ItemListViewController: UIViewController {
-    private let reusableCell = "ItemCell"
+    private let cellIdentifier = "ItemCell"
     private let items: [ClothingItem] = [
         ClothingItem(name: "白Tシャツ", brand: "UNIQLO", category: .tops, isReusableBeforeWash: false),
         ClothingItem(name: "デニム", brand: "Levi's", category: .pants, isReusableBeforeWash: true),
@@ -23,7 +23,7 @@ final class ItemListViewController: UIViewController {
         super.viewDidLoad()
         self.title = "アイテム一覧"
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: reusableCell)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
     }
 }
@@ -34,11 +34,14 @@ extension ItemListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let content = items[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: reusableCell, for: indexPath)
+        let item = items[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         var config = cell.defaultContentConfiguration()
         cell.textLabel?.numberOfLines=0
-        config.text = "\(content.name)\n\(content.category.displayName)\(content.isReusableBeforeWash ? "・毎回は洗わない" : "")"
+        
+        let washNote = item.isReusableBeforeWash ? "・毎回は洗わない" : ""
+        config.text = "\(item.name)"
+        config.secondaryText = (item.category.displayName) + (washNote)
         cell.contentConfiguration = config
         return cell
     }
