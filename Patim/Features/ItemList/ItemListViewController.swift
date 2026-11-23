@@ -15,16 +15,24 @@ final class ItemListViewController: UIViewController {
         ClothingItem(name: "ニット", brand: "Cornier", category: .tops, isReusableBeforeWash: true),
         ClothingItem(name: "MA-1", brand: "Entire Studios", category: .outer, isReusableBeforeWash: true),
         ClothingItem(name: "靴下", brand: "UNIQLO", category: .other, isReusableBeforeWash: false),
-    ]
+    ].compactMap{ $0 }
     
     @IBOutlet private weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "アイテム一覧"
+        let registerButton = UIBarButtonItem(image: UIImage(systemName: "plus.app"), style: .plain, target: self, action: #selector(didTapRegister))
+        navigationItem.rightBarButtonItem = registerButton
+       
+        
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
+    }
+    @objc func didTapRegister() {
+        let itemRegisterViewController = ItemRegisterViewController()
+        navigationController?.pushViewController(itemRegisterViewController, animated: true)
     }
 }
 
