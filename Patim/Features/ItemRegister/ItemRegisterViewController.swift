@@ -21,10 +21,12 @@ final class ItemRegisterViewController: UIViewController {
         let name = (nameField.text ?? "")
         let brand = (brandField.text ?? "")
         guard let newClothingItem = ClothingItem.init(name: name, brand: brand, category: selectedCategory, isReusableBeforeWash: washSwitch.isOn) else {
+            registerErrorLabel.isHidden = false
             print("名前かブランド名が不正です")
-            registerErrorLabel.text = "名前かブランド名を入力してください"
+            registerErrorLabel.text = "名前とブランド名を入力してください"
             return
         }
+        registerErrorLabel.isHidden = true
         delegate?.itemRegisterViewController(self, didRegister: newClothingItem)
         self.navigationController?.popViewController(animated: true)
     }
