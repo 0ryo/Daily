@@ -13,6 +13,7 @@
                 <outlet property="brandField" destination="d8N-Zy-ZeU" id="IHp-nP-Wpy"/>
                 <outlet property="categoryButton" destination="OeU-Mw-ZP6" id="wRv-oB-Ajj"/>
                 <outlet property="nameField" destination="NsB-XB-EVl" id="gE2-DR-Pfl"/>
+                <outlet property="registerErrorLabel" destination="vXW-SF-VpY" id="q06-Gb-8nJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="washSwitch" destination="OS1-jx-Jja" id="0hG-Vz-UGh"/>
             </connections>
@@ -46,7 +47,7 @@
                     <rect key="frame" x="133" y="223" width="244" height="34"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
                 </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="カテゴリー" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PFd-qB-wW2">
                     <rect key="frame" x="28" y="286" width="80" height="21"/>
@@ -81,6 +82,13 @@
                         <action selector="registerButtonDidTap:" destination="-1" eventType="touchUpInside" id="gjX-UC-KlJ"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vXW-SF-VpY">
+                    <rect key="frame" x="61" y="457" width="270" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>

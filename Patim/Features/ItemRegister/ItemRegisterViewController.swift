@@ -16,10 +16,15 @@ final class ItemRegisterViewController: UIViewController {
     @IBOutlet private weak var brandField: UITextField!
     @IBOutlet private weak var categoryButton: UIButton!
     @IBOutlet private weak var washSwitch: UISwitch!
+    @IBOutlet private weak var registerErrorLabel: UILabel!
     @IBAction private func registerButtonDidTap(_ sender: UIButton) {
         let name = (nameField.text ?? "")
         let brand = (brandField.text ?? "")
-        guard let newClothingItem = ClothingItem.init(name: name, brand: brand, category: selectedCategory, isReusableBeforeWash: washSwitch.isOn) else { return }
+        guard let newClothingItem = ClothingItem.init(name: name, brand: brand, category: selectedCategory, isReusableBeforeWash: washSwitch.isOn) else {
+            print("名前かブランド名が不正です")
+            registerErrorLabel.text = "名前かブランド名を入力してください"
+            return
+        }
         delegate?.itemRegisterViewController(self, didRegister: newClothingItem)
         self.navigationController?.popViewController(animated: true)
     }
@@ -37,9 +42,24 @@ final class ItemRegisterViewController: UIViewController {
         categoryButton.menu = UIMenu(children: categories)
         categoryButton.showsMenuAsPrimaryAction = true
         categoryButton.changesSelectionAsPrimaryAction = true
+        
+        nameField.delegate = self
+        brandField.delegate = self
     }
 }
 
 protocol ItemRegisterViewControllerDelegate: AnyObject {
     func itemRegisterViewController(_ viewController: ItemRegisterViewController, didRegister item: ClothingItem)
+}
+
+extension ItemRegisterViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard textField != brandField else {
+            self.view.endEditing(true)
+            return true
+        }
+        textField.resignFirstResponder()
+        brandField.becomeFirstResponder()
+        return true
+    }
 }
