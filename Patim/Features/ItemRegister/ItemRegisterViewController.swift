@@ -22,7 +22,6 @@ final class ItemRegisterViewController: UIViewController {
         let brand = (brandField.text ?? "")
         guard let newClothingItem = ClothingItem.init(name: name, brand: brand, category: selectedCategory, isReusableBeforeWash: washSwitch.isOn) else {
             registerErrorLabel.isHidden = false
-            print("名前かブランド名が不正です")
             registerErrorLabel.text = "名前とブランド名を入力してください"
             return
         }
@@ -35,11 +34,10 @@ final class ItemRegisterViewController: UIViewController {
         super.viewDidLoad()
         
         let categories = ClothingCategory.allCases.map { category in
-            UIAction(title: category.displayName) { [weak self] _ in
+            UIAction(title: category.displayName, state: category == selectedCategory ? .on : .off) { [weak self] _ in
                 self?.selectedCategory = category
             }
         }
-        categories[0].state = .on
         
         categoryButton.menu = UIMenu(children: categories)
         categoryButton.showsMenuAsPrimaryAction = true
@@ -56,12 +54,12 @@ protocol ItemRegisterViewControllerDelegate: AnyObject {
 
 extension ItemRegisterViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard textField != brandField else {
+        if textField == nameField {
+            textField.resignFirstResponder()
+            brandField.becomeFirstResponder()
+        } else {
             self.view.endEditing(true)
-            return true
         }
-        textField.resignFirstResponder()
-        brandField.becomeFirstResponder()
         return true
     }
 }

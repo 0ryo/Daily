@@ -28,7 +28,7 @@ final class ItemListViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
     }
-    @objc func didTapRegister() {
+    @objc private func didTapRegister() {
         let itemRegisterViewController = ItemRegisterViewController()
         itemRegisterViewController.delegate = self
         navigationController?.pushViewController(itemRegisterViewController, animated: true)
