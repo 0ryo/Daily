@@ -72,7 +72,7 @@
 | 状態 | ブランチ | 内容 | 主なトピック |
 |---|---|---|---|
 | 完了（2026-11-21） | `feature/item-list` | `apps/WearLog/` にプロジェクトを作り、Main.storyboard を使わずに起動する。`ClothingItem`・`ClothingCategory` とモックの服で一覧を出す（土日・4時間） | SceneDelegate、XIB、UITableView、enum |
-| 未着手 | `feature/item-register` | 【設計】服の登録画面。名前の前後の空白を除いて検証し、登録した服をデリゲートで一覧に返す（土日・4時間） | UITextField、UISegmentedControl、UISwitch、デリゲート |
+| 完了（2026-11-25） | `feature/item-register` | 【設計】服の登録画面。名前の前後の空白を除いて検証し、登録した服をデリゲートで一覧に返す（土日・4時間） | UITextField、UISegmentedControl、UISwitch、デリゲート |
 | 未着手 | `feature/item-detail` | 一覧のタップで服の詳細画面へ進み、名前・カテゴリ・毎回は洗わない服かを表示する | UINavigationController、画面への値の渡し方 |
 | 未着手 | `feature/item-edit-delete` | 詳細から編集画面を開き、結果をクロージャで返す。一覧のスワイプで削除する | クロージャ、`[weak self]`、UITableView の削除 |
 | 未着手 | `feature/item-sections` | 一覧をカテゴリごとのセクションに分ける | `Dictionary(grouping:by:)`、`CaseIterable`、`sorted` |
