@@ -5,7 +5,7 @@
 //  Created by 伊藤瞭汰 on 2026/11/21.
 //
 
-enum ClothingCategory {
+enum ClothingCategory: CaseIterable {
     case tops
     case pants
     case outer
