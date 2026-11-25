@@ -9,7 +9,7 @@ import UIKit
 
 final class ItemListViewController: UIViewController {
     private let cellIdentifier = "ItemCell"
-    private let items: [ClothingItem] = [
+    private var items: [ClothingItem] = [
         ClothingItem(name: "白Tシャツ", brand: "UNIQLO", category: .tops, isReusableBeforeWash: false),
         ClothingItem(name: "デニム", brand: "Levi's", category: .pants, isReusableBeforeWash: true),
         ClothingItem(name: "ニット", brand: "Cornier", category: .tops, isReusableBeforeWash: true),
@@ -25,13 +25,12 @@ final class ItemListViewController: UIViewController {
         let registerButton = UIBarButtonItem(image: UIImage(systemName: "plus.app"), style: .plain, target: self, action: #selector(didTapRegister))
         navigationItem.rightBarButtonItem = registerButton
        
-        
-        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
     }
     @objc func didTapRegister() {
         let itemRegisterViewController = ItemRegisterViewController()
+        itemRegisterViewController.delegate = self
         navigationController?.pushViewController(itemRegisterViewController, animated: true)
     }
 }
@@ -52,5 +51,12 @@ extension ItemListViewController: UITableViewDataSource {
         config.secondaryText = (item.category.displayName) + (washNote)
         cell.contentConfiguration = config
         return cell
+    }
+}
+
+extension ItemListViewController: ItemRegisterViewControllerDelegate {
+    func itemRegisterViewController(_ viewController: ItemRegisterViewController, didRegister item: ClothingItem) {
+        items.append(item)
+        tableView.reloadData()
     }
 }

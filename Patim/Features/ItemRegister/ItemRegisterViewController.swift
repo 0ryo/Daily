@@ -16,15 +16,12 @@ final class ItemRegisterViewController: UIViewController {
     @IBOutlet private weak var brandField: UITextField!
     @IBOutlet private weak var categoryButton: UIButton!
     @IBOutlet private weak var washSwitch: UISwitch!
-    @IBAction private func categoryButtonDidTap(_ sender: UIButton) {
-        print(selectedCategory)
-        
-    }
     @IBAction private func registerButtonDidTap(_ sender: UIButton) {
-        let name = (nameField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let brand = (brandField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let newClothingItem = ClothingItem.init(name: name, brand: brand, category: selectedCategory, isReusableBeforeWash: true) else { return }
+        let name = (nameField.text ?? "")
+        let brand = (brandField.text ?? "")
+        guard let newClothingItem = ClothingItem.init(name: name, brand: brand, category: selectedCategory, isReusableBeforeWash: washSwitch.isOn) else { return }
         delegate?.itemRegisterViewController(self, didRegister: newClothingItem)
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func viewDidLoad() {
